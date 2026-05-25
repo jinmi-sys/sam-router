@@ -1129,28 +1129,131 @@ body::before {
       <!-- PAGE: Usage -->
       <div class="page" id="page-usage">
         <div class="page-header">
-          <h1 class="page-title">Usage</h1>
-          <p class="page-subtitle">Monitor API usage, token consumption, and request logs</p>
+          <div>
+            <h1 class="page-title">Usage</h1>
+            <p class="page-subtitle">Monitor API usage, token consumption, and request logs</p>
+          </div>
         </div>
-        <div class="card">
-          <div class="card-title">&#128200; Overview</div>
-          <div class="flex gap-4">
-            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
-              <div style="font-size:11px;color:var(--text-muted)">Total Requests</div>
-              <div style="font-size:24px;font-weight:700;color:var(--emerald)">1,247</div>
+        <!-- Tabs + Period selector -->
+        <div class="usage-controls">
+          <div class="tab-group">
+            <button class="tab-btn active" data-tab="overview" onclick="switchUsageTab('overview')">Overview</button>
+            <button class="tab-btn" data-tab="details" onclick="switchUsageTab('details')">Details</button>
+          </div>
+          <div class="tab-group" id="usage-period-group">
+            <button class="tab-btn active" data-period="today" onclick="setUsagePeriod('today')">Today</button>
+            <button class="tab-btn" data-period="24h" onclick="setUsagePeriod('24h')">24h</button>
+            <button class="tab-btn" data-period="7d" onclick="setUsagePeriod('7d')">7D</button>
+            <button class="tab-btn" data-period="30d" onclick="setUsagePeriod('30d')">30D</button>
+            <button class="tab-btn" data-period="60d" onclick="setUsagePeriod('60d')">60D</button>
+          </div>
+        </div>
+        <!-- Overview Tab -->
+        <div class="usage-tab" id="usage-tab-overview">
+          <!-- Stat Cards -->
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="stat-label">Total Requests</div>
+              <div class="stat-value" style="color:var(--text)">1,247</div>
             </div>
-            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
-              <div style="font-size:11px;color:var(--text-muted)">Input Tokens</div>
-              <div style="font-size:24px;font-weight:700;color:var(--emerald)">2.4M</div>
+            <div class="stat-card">
+              <div class="stat-label">Total Input Tokens</div>
+              <div class="stat-value" style="color:var(--emerald)">2.4M</div>
             </div>
-            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
-              <div style="font-size:11px;color:var(--text-muted)">Output Tokens</div>
-              <div style="font-size:24px;font-weight:700;color:var(--emerald)">890K</div>
+            <div class="stat-card">
+              <div class="stat-label">Output Tokens</div>
+              <div class="stat-value" style="color:var(--emerald)">890K</div>
             </div>
-            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
-              <div style="font-size:11px;color:var(--text-muted)">Est. Savings</div>
-              <div style="font-size:24px;font-weight:700;color:var(--red-primary)">$0.00</div>
+            <div class="stat-card">
+              <div class="stat-label">Est. Cost</div>
+              <div class="stat-value" style="color:var(--warning)">~$12.47</div>
+              <div style="font-size:9px;color:var(--text-muted);margin-top:2px">Estimated, not actual billing</div>
             </div>
+          </div>
+          <!-- Token/Cost Chart -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Token Usage</div>
+              <div class="tab-group" style="margin:0">
+                <button class="tab-btn active" id="chart-mode-tokens" onclick="setChartMode('tokens')">Tokens</button>
+                <button class="tab-btn" id="chart-mode-cost" onclick="setChartMode('cost')">Cost</button>
+              </div>
+            </div>
+            <div id="usage-chart" class="chart-placeholder">
+              <canvas id="usage-canvas"></canvas>
+            </div>
+          </div>
+          <!-- Usage Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Usage by Model</div>
+              <div class="tab-group" style="margin:0">
+                <button class="tab-btn active" id="table-mode-tokens" onclick="setTableMode('tokens')">Tokens</button>
+                <button class="tab-btn" id="table-mode-cost" onclick="setTableMode('cost')">Cost</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th style="text-align:right">Input</th>
+                  <th style="text-align:right">Output</th>
+                  <th style="text-align:right">Total</th>
+                  <th style="text-align:right">Requests</th>
+                </tr>
+              </thead>
+              <tbody id="usage-table-tokens">
+                <tr><td><code>claude-opus-4-6</code></td><td class="text-right">1.2M</td><td class="text-right">445K</td><td class="text-right" style="font-weight:600">1.6M</td><td class="text-right">523</td></tr>
+                <tr><td><code>gpt-4o</code></td><td class="text-right">680K</td><td class="text-right">210K</td><td class="text-right" style="font-weight:600">890K</td><td class="text-right">341</td></tr>
+                <tr><td><code>glm-4.7</code></td><td class="text-right">320K</td><td class="text-right">145K</td><td class="text-right" style="font-weight:600">465K</td><td class="text-right">218</td></tr>
+                <tr><td><code>kimi-k2-thinking</code></td><td class="text-right">180K</td><td class="text-right">90K</td><td class="text-right" style="font-weight:600">270K</td><td class="text-right">165</td></tr>
+              </tbody>
+              <tbody id="usage-table-cost" style="display:none">
+                <tr><td><code>claude-opus-4-6</code></td><td class="text-right">$6.24</td><td class="text-right">$3.89</td><td class="text-right" style="font-weight:600;color:var(--warning)">$10.13</td><td class="text-right">523</td></tr>
+                <tr><td><code>gpt-4o</code></td><td class="text-right">$1.02</td><td class="text-right">$0.63</td><td class="text-right" style="font-weight:600;color:var(--warning)">$1.65</td><td class="text-right">341</td></tr>
+                <tr><td><code>glm-4.7</code></td><td class="text-right">$0.19</td><td class="text-right">$0.11</td><td class="text-right" style="font-weight:600;color:var(--warning)">$0.30</td><td class="text-right">218</td></tr>
+                <tr><td><code>kimi-k2-thinking</code></td><td class="text-right">$0.18</td><td class="text-right">$0.05</td><td class="text-right" style="font-weight:600;color:var(--warning)">$0.23</td><td class="text-right">165</td></tr>
+              </tbody>
+              <tfoot>
+                <tr style="border-top:1px solid var(--border);font-weight:600">
+                  <td>Summary</td>
+                  <td class="text-right" id="summary-input">2.4M</td>
+                  <td class="text-right" id="summary-output">890K</td>
+                  <td class="text-right" id="summary-total">3.3M</td>
+                  <td class="text-right">1,247</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <!-- Details Tab -->
+        <div class="usage-tab" id="usage-tab-details" style="display:none">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Request Logs</div>
+              <input type="text" class="form-input" placeholder="Filter by model, status..." style="width:200px;font-size:12px" oninput="filterUsageLogs(this.value)">
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Model</th>
+                  <th>Method</th>
+                  <th style="text-align:right">Input</th>
+                  <th style="text-align:right">Output</th>
+                  <th style="text-align:right">Latency</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="usage-logs">
+                <tr><td class="text-muted">21:32:14</td><td><code>claude-opus-4-6</code></td><td>POST /chat/completions</td><td class="text-right">2.4K</td><td class="text-right">890</td><td class="text-right">1.2s</td><td><span class="badge badge-success">200</span></td></tr>
+                <tr><td class="text-muted">21:31:47</td><td><code>gpt-4o</code></td><td>POST /chat/completions</td><td class="text-right">1.8K</td><td class="text-right">420</td><td class="text-right">0.8s</td><td><span class="badge badge-success">200</span></td></tr>
+                <tr><td class="text-muted">21:30:22</td><td><code>glm-4.7</code></td><td>POST /chat/completions</td><td class="text-right">3.1K</td><td class="text-right">1.2K</td><td class="text-right">2.1s</td><td><span class="badge badge-success">200</span></td></tr>
+                <tr><td class="text-muted">21:29:55</td><td><code>claude-opus-4-6</code></td><td>POST /chat/completions</td><td class="text-right">890</td><td class="text-right">—</td><td class="text-right">0.3s</td><td><span class="badge badge-error">429</span></td></tr>
+                <tr><td class="text-muted">21:28:30</td><td><code>kimi-k2-thinking</code></td><td>POST /chat/completions</td><td class="text-right">5.2K</td><td class="text-right">2.1K</td><td class="text-right">3.4s</td><td><span class="badge badge-success">200</span></td></tr>
+                <tr><td class="text-muted">21:27:18</td><td><code>gpt-4o</code></td><td>POST /embeddings</td><td class="text-right">12K</td><td class="text-right">—</td><td class="text-right">0.5s</td><td><span class="badge badge-success">200</span></td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
