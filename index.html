@@ -493,6 +493,49 @@ body::before {
 .badge-error { background: rgba(239,68,68,0.15); color: #ef4444; }
 .badge.sm { font-size: 10px; padding: 1px 6px; }
 .text-muted { color: var(--text-muted); }
+/* Combo Card */
+.combo-card { margin-bottom: 8px; }
+.combo-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.combo-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--red); display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.combo-info { flex: 1; min-width: 0; }
+.combo-name { font-size: 14px; font-weight: 600; color: var(--text); display: block; margin-bottom: 4px; }
+.combo-models { display: flex; flex-wrap: wrap; gap: 4px; }
+.model-tag {
+  font-size: 11px; font-family: monospace;
+  background: rgba(255,255,255,0.05); color: var(--text-muted);
+  padding: 2px 8px; border-radius: 4px;
+  max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.combo-actions {
+  display: flex; align-items: center; gap: 8px;
+  padding-top: 10px; border-top: 1px solid var(--border);
+}
+/* Combo Model List (inside modal) */
+.combo-model-list { display: flex; flex-direction: column; gap: 4px; max-height: 200px; overflow-y: auto; }
+.combo-model-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 8px; border-radius: 4px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  font-size: 12px;
+}
+.model-idx { width: 20px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 11px; }
+.model-val { flex: 1; font-family: monospace; color: var(--text); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-arrows { display: flex; gap: 2px; }
+.model-arrows button {
+  background: none; border: none; color: var(--text-muted); cursor: pointer;
+  padding: 2px 4px; border-radius: 3px; font-size: 11px;
+}
+.model-arrows button:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.model-arrows button:disabled { opacity: 0.3; cursor: not-allowed; }
+.model-remove {
+  background: none; border: none; color: var(--text-muted); cursor: pointer;
+  padding: 2px 6px; border-radius: 3px; font-size: 12px;
+}
+.model-remove:hover { color: var(--red); background: rgba(220,38,38,0.1); }
 /* Section divider */
 .section-divider {
   height: 1px;
@@ -988,23 +1031,53 @@ body::before {
         <div class="page-header">
           <h1 class="page-title">Combos</h1>
           <p class="page-subtitle">Create model combos with fallback support</p>
+          <button class="btn btn-primary" onclick="showCreateComboModal()">&#43; Create Combo</button>
         </div>
-        <button class="btn btn-primary mb-4">&#43; Create Combo</button>
-        <div class="card">
-          <div class="card-title">my-coding-stack</div>
-          <div style="font-size:12px;color:var(--text-secondary);font-family:monospace">
-            1. cc/claude-opus-4-6<br>
-            2. glm/glm-4.7<br>
-            3. if/kimi-k2-thinking
+        
+        <!-- Combo Card 1: my-coding-stack -->
+        <div class="card combo-card">
+          <div class="combo-header">
+            <div class="combo-icon">CS</div>
+            <div class="combo-info">
+              <code class="combo-name">my-coding-stack</code>
+              <div class="combo-models">
+                <span class="model-tag">cc/claude-opus-4-6</span>
+                <span class="model-tag">glm/glm-4.7</span>
+                <span class="model-tag">if/kimi-k2-thinking</span>
+              </div>
+            </div>
           </div>
-          <div class="flex gap-2 mt-4">
+          <div class="combo-actions">
+            <div class="toggle-wrap">
+              <span class="toggle-label">Round Robin</span>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <button class="btn btn-ghost ml-auto" onclick="copyComboName('my-coding-stack')">&#128203; Copy</button>
+            <button class="btn btn-ghost" onclick="showEditComboModal('my-coding-stack')">&#9998; Edit</button>
+            <button class="btn btn-ghost" style="color:var(--red-primary)" onclick="deleteCombo('my-coding-stack')">&#128465; Delete</button>
+          </div>
+        </div>
+
+        <!-- Combo Card 2: balanced-fallback -->
+        <div class="card combo-card">
+          <div class="combo-header">
+            <div class="combo-icon">BF</div>
+            <div class="combo-info">
+              <code class="combo-name">balanced-fallback</code>
+              <div class="combo-models">
+                <span class="model-tag">or/openai/gpt-4o</span>
+                <span class="model-tag">or/google/gemini-2.5-flash</span>
+              </div>
+            </div>
+          </div>
+          <div class="combo-actions">
             <div class="toggle-wrap">
               <span class="toggle-label">Round Robin</span>
               <div class="toggle" onclick="this.classList.toggle('on')"></div>
             </div>
-            <button class="btn btn-ghost ml-auto">&#128203; Copy</button>
-            <button class="btn btn-ghost">&#9998; Edit</button>
-            <button class="btn btn-ghost" style="color:var(--red-primary)">&#128465; Delete</button>
+            <button class="btn btn-ghost ml-auto" onclick="copyComboName('balanced-fallback')">&#128203; Copy</button>
+            <button class="btn btn-ghost" onclick="showEditComboModal('balanced-fallback')">&#9998; Edit</button>
+            <button class="btn btn-ghost" style="color:var(--red-primary)" onclick="deleteCombo('balanced-fallback')">&#128465; Delete</button>
           </div>
         </div>
       </div>
@@ -1563,6 +1636,102 @@ function navigateTo(page) {
   document.querySelectorAll('.nav-item[data-page]').forEach(item => {
     if (item.dataset.page === page) item.classList.add('active');
   });
+}
+
+// ========== COMBO FUNCTIONS ==========
+function showCreateComboModal() {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'combo-modal';
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Create Combo</h3>
+        <button class="btn btn-ghost btn-sm" onclick="this.closest('.modal-overlay').remove()">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Combo Name</label>
+        <input type="text" class="form-input" id="combo-name" placeholder="my-coding-stack" autocomplete="off">
+        <small style="color:var(--text-muted);font-size:11px;margin-top:4px;display:block">Only letters, numbers, -, _, .</small>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Models <span style="color:var(--text-muted);font-weight:400">(drag to reorder priority)</span></label>
+        <div id="combo-model-list" class="combo-model-list"></div>
+        <div style="display:flex;gap:6px;margin-top:8px">
+          <input type="text" class="form-input" id="combo-model-input" placeholder="cc/claude-opus-4-6" style="flex:1">
+          <button class="btn btn-ghost btn-sm" onclick="addComboModel()">+ Add</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveCombo()">Create Combo</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+let comboModels = [];
+function addComboModel() {
+  const input = document.getElementById('combo-model-input');
+  const val = input.value.trim();
+  if (!val) return;
+  comboModels.push(val);
+  input.value = '';
+  renderComboModelList();
+}
+function removeComboModel(idx) {
+  comboModels.splice(idx, 1);
+  renderComboModelList();
+}
+function moveModelUp(idx) {
+  if (idx === 0) return;
+  [comboModels[idx-1], comboModels[idx]] = [comboModels[idx], comboModels[idx-1]];
+  renderComboModelList();
+}
+function moveModelDown(idx) {
+  if (idx >= comboModels.length - 1) return;
+  [comboModels[idx], comboModels[idx+1]] = [comboModels[idx+1], comboModels[idx]];
+  renderComboModelList();
+}
+function renderComboModelList() {
+  const el = document.getElementById('combo-model-list');
+  if (!el) return;
+  el.innerHTML = comboModels.map((m, i) => `
+    <div class="combo-model-row" draggable="true">
+      <span class="model-idx">${i+1}</span>
+      <code class="model-val">${m}</code>
+      <div class="model-arrows">
+        <button onclick="moveModelUp(${i})" ${i===0?'disabled':''}>↑</button>
+        <button onclick="moveModelDown(${i})" ${i>=comboModels.length-1?'disabled':''}>↓</button>
+      </div>
+      <button class="model-remove" onclick="removeComboModel(${i})">✕</button>
+    </div>
+  `).join('');
+}
+function saveCombo() {
+  const name = document.getElementById('combo-name').value.trim();
+  if (!name) return alert('Name required');
+  if (!/^[a-zA-Z0-9_.\-]+$/.test(name)) return alert('Invalid name format');
+  if (comboModels.length === 0) return alert('Add at least one model');
+  document.getElementById('combo-modal').remove();
+  comboModels = [];
+  showNotification('Combo created: ' + name);
+}
+function showEditComboModal(name) {
+  comboModels = [];
+  showCreateComboModal();
+  document.getElementById('combo-name').value = name;
+  document.querySelector('#combo-modal .modal-title').textContent = 'Edit Combo';
+  document.querySelector('#combo-modal .btn-primary').textContent = 'Save Changes';
+}
+function deleteCombo(name) {
+  if (!confirm('Delete combo "' + name + '"?')) return;
+  showNotification('Combo deleted: ' + name);
+}
+function copyComboName(name) {
+  navigator.clipboard.writeText(name);
+  showNotification('Copied: ' + name);
 }
 
 // ========== PROVIDER FUNCTIONS ==========

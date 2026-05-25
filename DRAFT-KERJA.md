@@ -101,7 +101,7 @@ Grid Pattern : #0d1410 (subtle emerald grid)
 
 ### Phase 3: Main Pages (PRIORITY)
 - [x] **Endpoint Page** — API endpoint display, Tunnel/Tailscale toggle, Token Saver (RTK + Caveman), API Keys (sam_sr_ prefix)
-- [ ] **Providers Page** — Provider cards, connection status, "Add Anthropic/OpenAI Compatible", "Test All"
+- [x] **Providers Page** — 4 categories (Custom/OAuth/Free/Free-Tier), provider cards, CRUD, modals, test connections
 - [ ] **Combos Page** — Create combo, round-robin toggle, copy/edit/delete
 - [ ] **Usage Page** — Overview tab, token charts, cost tracking
 - [ ] **Quota Tracker Page** — Account list, quota bars, refresh/edit/delete, pagination
