@@ -271,6 +271,18 @@ body::before {
   border-color: var(--emerald);
   color: var(--emerald);
 }
+.topbar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-left: 12px;
+  flex: 1;
+}
+.topbar-right {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
 /* Page content */
 .page-content {
   flex: 1;
@@ -797,7 +809,7 @@ body::before {
   <main class="main-content">
     <div class="topbar">
       <button class="topbar-btn hamburger" onclick="toggleSidebar()">&#9776;</button>
-      <input type="text" class="topbar-search" placeholder="Search providers..." />
+      <span class="topbar-title" id="topbar-title">Endpoint</span>
       <div class="topbar-right">
         <button class="topbar-btn active" id="theme-btn" onclick="toggleTheme()">&#9788;</button>
         <button class="topbar-btn">&#9783;</button>
@@ -2439,6 +2451,18 @@ function navigateTo(page) {
   document.querySelectorAll('.nav-item[data-page]').forEach(item => {
     if (item.dataset.page === page) item.classList.add('active');
   });
+  // Update topbar title
+  const titleMap = {
+    'endpoint': 'Endpoint', 'providers': 'Providers', 'combos': 'Combos',
+    'usage': 'Usage', 'quota-tracker': 'Quota Tracker', 'mitm': 'MITM',
+    'cli-tools': 'CLI Tools', 'media-providers': 'Media Providers',
+    'embedding': 'Embedding', 'text-to-image': 'Text to Image',
+    'text-to-speech': 'Text to Speech', 'speech-to-text': 'Speech to Text',
+    'web-fetch': 'Web Fetch/Search', 'proxy-pools': 'Proxy Pools',
+    'skills': 'Skills', 'console-log': 'Console Log', 'settings': 'Settings'
+  };
+  const titleEl = document.getElementById('topbar-title');
+  if (titleEl) titleEl.textContent = titleMap[page] || page;
   // Redraw usage chart when navigating to usage
   if (page === 'usage') { requestAnimationFrame(() => requestAnimationFrame(() => drawUsageChart('tokens'))); }
 }
