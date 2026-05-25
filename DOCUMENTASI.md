@@ -19,7 +19,8 @@
 | 20:48 WIB | Minggu, 25 Mei 2026 | P3-Step 1: Endpoint Page completed. Tunnel/Tailscale, RTK+Caveman, API Key CRUD, logs. | ✅ Selesai |
 | 21:10 WIB | Minggu, 25 Mei 2026 | P3-Step 2: Providers Page completed. 4 provider categories, CRUD, modals, badges. | ✅ Selesai |
 | 21:25 WIB | Minggu, 25 Mei 2026 | P3-Step 3: Combos Page completed. Cards, create/edit modal, model reorder, round-robin. | ✅ Selesai |
-| 21:40 WIB | Minggu, 25 Mei 2026 | Mobile sidebar auto-hide. Hamburger toggle, overlay, auto-close on nav. Desktop unchanged. | ✅ Selesai |
+| 21:40 WIB | Minggu, 25 Mei 2026 | Mobile sidebar auto-hide. Hamburger toggle, overlay, auto-close on nav click. | ✅ Selesai |
+| 22:00 WIB | Minggu, 25 Mei 2026 | P3-Step 4: Usage Page. Stat cards (Requests/Input/Output/Cost), Tokens/Cost toggle, area chart, usage table per model, Details tab dengan request logs, period selector. Bug fix: nav click handler sekarang panggil navigateTo() — chart auto-redraw. | ✅ Selesai |
 | 20:50 WIB | Minggu, 25 Mei 2026 | GitHub push + Pages deploy: jinmi-sys.github.io/sam-router | ✅ Selesai |
 | - | - | Build HTML frontend (theme: red dark emerald) | ⏳ Pending |
 | - | - | Hardcode port 2500 ke config | ⏳ Pending |

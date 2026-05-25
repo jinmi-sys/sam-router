@@ -2,7 +2,7 @@
 
 **Status:** In Progress  
 **Dimulai:** 19:35 WIB, Minggu, 25 Mei 2026  
-**Last Updated:** 20:22 WIB, Minggu, 25 Mei 2026  
+**Last Updated:** 22:00 WIB, Minggu, 25 Mei 2026  
 **Source Reference:** 9Router Proxy v0.4.59  
 **Workspace:** `/home/yui/.hermes/profiles/louis/workspace/sam-router/`
 
@@ -103,7 +103,7 @@ Grid Pattern : #0d1410 (subtle emerald grid)
 - [x] **Endpoint Page** — API endpoint display, Tunnel/Tailscale toggle, Token Saver (RTK + Caveman), API Keys (sam_sr_ prefix)
 - [x] **Providers Page** — 4 categories (Custom/OAuth/Free/Free-Tier), provider cards, CRUD, modals, test connections
 - [x] **Combos Page** — 2 demo cards, create/edit modal with model reorder (up/down arrows), round-robin toggle, name validation
-- [ ] **Usage Page** — Overview tab, token charts, cost tracking
+- [x] **Usage Page** — Overview/Details tabs, stat cards, Tokens/Cost toggle, area chart, usage table per model, Details request logs, period selector, mobile sidebar auto-hide
 - [ ] **Quota Tracker Page** — Account list, quota bars, refresh/edit/delete, pagination
 - [ ] **MITM Page** — Status, start server, tool interception (Antigravity/Copilot/Kiro)
 - [ ] **CLI Tools Page** — CLI config

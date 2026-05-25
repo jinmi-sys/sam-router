@@ -609,6 +609,20 @@ body::before {
   background: rgba(0,0,0,0.6);
   z-index: 98;
 }
+/* === QUOTA TRACKER === */
+.quota-card { border: 1px solid var(--border); }
+.quota-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.quota-name { font-weight: 600; font-size: 14px; color: var(--text-primary); margin-bottom: 4px; }
+.quota-meta { font-size: 12px; color: var(--text-secondary); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.quota-bar-wrap { margin-bottom: 10px; }
+.quota-bar { height: 8px; background: var(--bg-hover); border-radius: 4px; overflow: hidden; margin-bottom: 4px; }
+.quota-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.quota-fill.success { background: var(--success); }
+.quota-fill.warning { background: var(--warning); }
+.quota-fill.danger { background: var(--error); }
+.quota-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+.quota-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+.quota-expiry { font-size: 12px; color: var(--text-secondary); }
 @media (max-width: 768px) {
   .hamburger { display: flex !important; }
   .sidebar {
@@ -1263,26 +1277,116 @@ body::before {
         <div class="page-header">
           <h1 class="page-title">Quota Tracker</h1>
           <p class="page-subtitle">Monitor provider quota usage and reset times</p>
+          <button class="btn btn-primary" onclick="showAddAccountModal()">+ Add Account</button>
         </div>
-        <div class="flex gap-2 mb-4">
-          <button class="btn btn-ghost">All Accounts</button>
-          <button class="btn btn-ghost">Expiring First</button>
-          <button class="btn btn-ghost">Turn Off Empty</button>
-          <button class="btn btn-ghost ml-auto">&#8635; Auto-refresh (33s)</button>
+        <div class="flex gap-2 mb-4 flex-wrap">
+          <button class="btn btn-sm btn-danger active" onclick="filterAccounts('all')" id="filter-all">All Accounts (4)</button>
+          <button class="btn btn-sm btn-ghost" onclick="filterAccounts('expiring')" id="filter-expiring">Expiring First</button>
+          <button class="btn btn-sm btn-ghost" onclick="filterAccounts('empty')" id="filter-empty">Turn Off Empty</button>
+          <span class="ml-auto" style="font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:4px">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block"></span>
+            Auto-refresh in <span id="quota-refresh-timer">33</span>s
+          </span>
         </div>
-        <div class="card">
-          <div class="card-title">Account 1</div>
-          <div style="font-size:12px;color:var(--text-secondary)">
-            Type: credit<br>
-            Used: 50/50 (100%)<br>
-            Expires: in 6d 11h 7m
+
+        <!-- Account 1: Credit type, high usage -->
+        <div class="card quota-card" data-type="credit" data-pct="92">
+          <div class="quota-header">
+            <div>
+              <div class="quota-name">Claude Max Anthropic</div>
+              <div class="quota-meta"><span class="badge badge-warning">Credit</span> claude-opus-4-6 · claude-sonnet-4-6</div>
+            </div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
           </div>
-          <div class="flex gap-2 mt-4">
-            <button class="btn btn-ghost">&#8635; Refresh</button>
-            <button class="btn btn-ghost">&#9998; Edit</button>
-            <button class="btn btn-ghost" style="color:var(--red-primary)">&#128465; Delete</button>
-            <div class="toggle on ml-auto" onclick="this.classList.toggle('on')"></div>
+          <div class="quota-bar-wrap">
+            <div class="quota-bar"><div class="quota-fill danger" style="width:92%"></div></div>
+            <div class="quota-label"><span>46 / 50 (92%)</span><span>Cost: $2.40</span></div>
           </div>
+          <div class="quota-footer">
+            <span class="quota-expiry" style="color:var(--error)">&#9200; Expires in 6d 11h 7m</span>
+            <div class="flex gap-1">
+              <button class="btn btn-sm btn-ghost">&#8635;</button>
+              <button class="btn btn-sm btn-ghost">&#9998;</button>
+              <button class="btn btn-sm btn-ghost" style="color:var(--red-primary)">&#128465;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account 2: Monthly, mid usage -->
+        <div class="card quota-card" data-type="monthly" data-pct="65">
+          <div class="quota-header">
+            <div>
+              <div class="quota-name">OpenAI Monthly</div>
+              <div class="quota-meta"><span class="badge badge-info">Monthly</span> gpt-4o · gpt-4o-mini</div>
+            </div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="quota-bar-wrap">
+            <div class="quota-bar"><div class="quota-fill warning" style="width:65%"></div></div>
+            <div class="quota-label"><span>3.25M / 5M tokens (65%)</span><span>Cost: $8.12</span></div>
+          </div>
+          <div class="quota-footer">
+            <span class="quota-expiry">&#128197; Resets Jun 1 (6d)</span>
+            <div class="flex gap-1">
+              <button class="btn btn-sm btn-ghost">&#8635;</button>
+              <button class="btn btn-sm btn-ghost">&#9998;</button>
+              <button class="btn btn-sm btn-ghost" style="color:var(--red-primary)">&#128465;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account 3: Free tier, low usage -->
+        <div class="card quota-card" data-type="free" data-pct="28">
+          <div class="quota-header">
+            <div>
+              <div class="quota-name">Google Gemini Free</div>
+              <div class="quota-meta"><span class="badge badge-success">Free</span> gemini-2.5-flash</div>
+            </div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="quota-bar-wrap">
+            <div class="quota-bar"><div class="quota-fill success" style="width:28%"></div></div>
+            <div class="quota-label"><span>140 / 500 req/day (28%)</span><span>Cost: $0</span></div>
+          </div>
+          <div class="quota-footer">
+            <span class="quota-expiry" style="color:var(--success)">&#128339; Daily reset in 18h 30m</span>
+            <div class="flex gap-1">
+              <button class="btn btn-sm btn-ghost">&#8635;</button>
+              <button class="btn btn-sm btn-ghost">&#9998;</button>
+              <button class="btn btn-sm btn-ghost" style="color:var(--red-primary)">&#128465;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account 4: Unlimited, no quota -->
+        <div class="card quota-card" data-type="unlimited" data-pct="0">
+          <div class="quota-header">
+            <div>
+              <div class="quota-name">DeepSeek API</div>
+              <div class="quota-meta"><span class="badge" style="background:var(--bg-hover);color:var(--text-secondary)">Unlimited</span> deepseek-r1 · deepseek-v3</div>
+            </div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="quota-bar-wrap">
+            <div class="quota-bar"><div class="quota-fill" style="width:45%;background:var(--text-muted)"></div></div>
+            <div class="quota-label"><span>22.5K / 50K RPM (45%)</span><span>Cost: $0.03</span></div>
+          </div>
+          <div class="quota-footer">
+            <span class="quota-expiry" style="color:var(--text-muted)">&#8734; No limit</span>
+            <div class="flex gap-1">
+              <button class="btn btn-sm btn-ghost">&#8635;</button>
+              <button class="btn btn-sm btn-ghost">&#9998;</button>
+              <button class="btn btn-sm btn-ghost" style="color:var(--red-primary)">&#128465;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center gap-2 mt-4">
+          <button class="btn btn-sm btn-ghost" disabled>&#9664;</button>
+          <button class="btn btn-sm btn-danger">1</button>
+          <button class="btn btn-sm btn-ghost">2</button>
+          <button class="btn btn-sm btn-ghost">&#9654;</button>
         </div>
       </div>
 
@@ -1793,10 +1897,36 @@ function navigateTo(page) {
   if (page === 'usage') { requestAnimationFrame(() => requestAnimationFrame(() => drawUsageChart('tokens'))); }
 }
 
+// ========== QUOTA TRACKER FUNCTIONS ==========
+function filterAccounts(type) {
+  document.querySelectorAll('[id^="filter-"]').forEach(b => b.classList.remove('active', 'btn-danger'));
+  document.querySelectorAll('[id^="filter-"]').forEach(b => b.classList.add('btn-ghost'));
+  const btn = document.getElementById('filter-' + type);
+  if (btn) { btn.classList.add('active', 'btn-danger'); btn.classList.remove('btn-ghost'); }
+  const cards = document.querySelectorAll('.quota-card');
+  if (type === 'all') { cards.forEach(c => c.style.display = ''); }
+  else if (type === 'expiring') {
+    cards.forEach(c => c.style.display = '');
+    const sorted = [...cards].sort((a, b) => parseInt(b.dataset.pct) - parseInt(a.dataset.pct));
+    const parent = cards[0]?.parentElement;
+    sorted.forEach(c => parent.insertBefore(c, null));
+  } else if (type === 'empty') {
+    cards.forEach(c => { c.style.display = parseInt(c.dataset.pct) === 0 ? 'none' : ''; });
+  }
+}
+let quotaTimer = 33;
+setInterval(() => {
+  quotaTimer--;
+  if (quotaTimer <= 0) quotaTimer = 33;
+  const el = document.getElementById('quota-refresh-timer');
+  if (el) el.textContent = quotaTimer;
+}, 1000);
+function showAddAccountModal() { alert('Add Account modal — Coming soon'); }
+
 // ========== USAGE FUNCTIONS ==========
 function switchUsageTab(tab) {
   document.querySelectorAll('.page-usage .tab-group:first-child .tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.tab-group .tab-btn[data-tab="${tab}"]`).classList.add('active');
+  document.querySelector('.tab-group .tab-btn[data-tab="' + tab + '"]').classList.add('active');
   document.getElementById('usage-tab-overview').style.display = tab === 'overview' ? '' : 'none';
   document.getElementById('usage-tab-details').style.display = tab === 'details' ? '' : 'none';
 }
