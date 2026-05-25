@@ -1563,18 +1563,201 @@ body::before {
           <h1 class="page-title">CLI Tools</h1>
           <p class="page-subtitle">Configure SAM Router for CLI tools</p>
         </div>
-        <div class="card">
-          <div class="card-title">&#128187; CLI Configuration</div>
-          <div style="font-size:13px;color:var(--text-secondary)">Configure your CLI tools to use SAM Router as the API proxy.</div>
-          <div class="form-group mt-4">
-            <label class="form-label">Base URL</label>
-            <input class="form-input" type="text" value="http://127.0.0.1:2500/v1" readonly>
-          </div>
-          <div class="form-group">
-            <label class="form-label">API Key</label>
-            <input class="form-input" type="text" value="sam_sr_k7x9m2p4q8v1n5j3h6f0d2s4a7g9l0" readonly>
+
+        <!-- Quick Config -->
+        <div class="card mb-4">
+          <div class="card-title">&#128187; Quick Config</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Copy these values to configure any CLI tool.</div>
+          <div class="form-row" style="margin-bottom:12px">
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Base URL</label>
+              <div class="flex gap-2">
+                <input class="form-input" type="text" value="http://127.0.0.1:2500/v1" readonly id="cli-base-url">
+                <button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('http://127.0.0.1:2500/v1')">Copy</button>
+              </div>
+            </div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label">API Key</label>
+              <div class="flex gap-2">
+                <input class="form-input" type="text" value="sam_sr_k7x9m2p4q8v1n5j3h6f0d2s4a7g9l0" readonly id="cli-api-key">
+                <button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('cli-api-key').value)">Copy</button>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Tool Cards -->
+        <h3 style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">Supported Tools</h3>
+
+        <!-- Claude Code -->
+        <div class="card cli-tool mb-3">
+          <div class="cli-tool-header" onclick="toggleCliTool('claude')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#D97757">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">Claude Code</div>
+                <div style="font-size:12px;color:var(--text-muted)">Anthropic CLI — ~/.claude/settings.json</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:#D97757;color:white">ENV</span>
+              <span class="mitm-chevron" id="chevron-claude">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-claude">
+            <div class="mb-3">
+              <label class="form-label">Environment Variables</label>
+              <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
+                <div>ANTHROPIC_BASE_URL=http://127.0.0.1:2500/v1</div>
+                <div>ANTHROPIC_API_KEY=sam_sr_...</div>
+                <div>ANTHROPIC_DEFAULT_OPUS_MODEL=cc/claude-opus-4-6</div>
+                <div>ANTHROPIC_DEFAULT_SONNET_MODEL=cc/claude-sonnet-4-6</div>
+                <div>ANTHROPIC_DEFAULT_HAIKU_MODEL=cc/claude-haiku-4.5</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Default Models</label>
+              <div class="flex gap-1 flex-wrap">
+                <span class="badge badge-info">opus</span>
+                <span class="badge badge-info">sonnet</span>
+                <span class="badge badge-info">haiku</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Codex CLI -->
+        <div class="card cli-tool mb-3">
+          <div class="cli-tool-header" onclick="toggleCliTool('codex')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#10A37F">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">OpenAI Codex CLI / App</div>
+                <div style="font-size:12px;color:var(--text-muted)">OpenAI Codex CLI & iOS App</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:#10A37F;color:white">CUSTOM</span>
+              <span class="mitm-chevron" id="chevron-codex">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-codex">
+            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
+              <div>OPENAI_API_KEY=sam_sr_...</div>
+              <div>OPENAI_BASE_URL=http://127.0.0.1:2500/v1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cursor -->
+        <div class="card cli-tool mb-3">
+          <div class="cli-tool-header" onclick="toggleCliTool('cursor')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#000000;border:1px solid #333">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">Cursor</div>
+                <div style="font-size:12px;color:var(--text-muted)">Cursor AI Code Editor — Settings → Models</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:var(--bg-hover);color:var(--text-muted)">GUIDE</span>
+              <span class="mitm-chevron" id="chevron-cursor">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-cursor">
+            <div class="warning mb-3" style="font-size:12px"><span class="warning-icon">&#9888;</span> Cursor Pro required. Routes through own server — enable Tunnel or Cloud Endpoint in Settings.</div>
+            <div style="font-size:13px;line-height:1.8">
+              <div>1. Open Settings → Models</div>
+              <div>2. Enable "OpenAI API key" option</div>
+              <div>3. Base URL: <code style="background:var(--bg-hover);padding:2px 6px;border-radius:3px">http://127.0.0.1:2500/v1</code></div>
+              <div>4. API Key: <code style="background:var(--bg-hover);padding:2px 6px;border-radius:3px">sam_sr_...</code></div>
+              <div>5. Click "View All Model" → "Add Custom Model"</div>
+              <div>6. Select your target model</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OpenCode -->
+        <div class="card cli-tool mb-3">
+          <div class="cli-tool-header" onclick="toggleCliTool('opencode')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#E87040">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">OpenCode</div>
+                <div style="font-size:12px;color:var(--text-muted)">OpenCode AI Terminal Assistant</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:#E87040;color:white">CUSTOM</span>
+              <span class="mitm-chevron" id="chevron-opencode">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-opencode">
+            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
+              <div>OPENAI_API_KEY=sam_sr_...</div>
+              <div>OPENAI_BASE_URL=http://127.0.0.1:2500/v1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cline -->
+        <div class="card cli-tool mb-3">
+          <div class="cli-tool-header" onclick="toggleCliTool('cline')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#00D1B2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">Cline</div>
+                <div style="font-size:12px;color:var(--text-muted)">Cline AI Coding Assistant</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:#00D1B2;color:white">CUSTOM</span>
+              <span class="mitm-chevron" id="chevron-cline">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-cline">
+            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
+              <div>OPENAI_API_KEY=sam_sr_...</div>
+              <div>OPENAI_BASE_URL=http://127.0.0.1:2500/v1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hermes Agent -->
+        <div class="card cli-tool mb-3">
+          <div class="cli-tool-header" onclick="toggleCliTool('hermes')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#8B5CF6">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2a7 7 0 017 7v4a7 7 0 01-14 0V9a7 7 0 017-7z"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">Hermes Agent</div>
+                <div style="font-size:12px;color:var(--text-muted)">Nous Research self-improving AI agent</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:#8B5CF6;color:white">CUSTOM</span>
+              <span class="mitm-chevron" id="chevron-hermes">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-hermes">
+            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
+              <div>OPENAI_API_KEY=sam_sr_...</div>
+              <div>OPENAI_BASE_URL=http://127.0.0.1:2500/v1</div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- PAGE: Embedding -->
@@ -2027,6 +2210,16 @@ function toggleMitmServer() {
   alert('MITM Server — Coming soon in backend integration');
 }
 function toggleMitmTool(toolId) {
+  const body = document.getElementById('body-' + toolId);
+  const chevron = document.getElementById('chevron-' + toolId);
+  if (body && chevron) {
+    body.classList.toggle('open');
+    chevron.classList.toggle('rotated');
+  }
+}
+
+// ========== CLI TOOLS FUNCTIONS ==========
+function toggleCliTool(toolId) {
   const body = document.getElementById('body-' + toolId);
   const chevron = document.getElementById('chevron-' + toolId);
   if (body && chevron) {
