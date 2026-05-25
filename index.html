@@ -1796,7 +1796,7 @@ function navigateTo(page) {
     if (item.dataset.page === page) item.classList.add('active');
   });
   // Redraw usage chart when navigating to usage
-  if (page === 'usage') setTimeout(() => drawUsageChart('tokens'), 100);
+  if (page === 'usage') setTimeout(() => drawUsageChart('tokens'), 300);
 }
 
 // ========== USAGE FUNCTIONS ==========
