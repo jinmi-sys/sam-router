@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAM Router v1.0</title>
+<style>
+/* === SAM ROUTER — RED DARK EMERALD THEME === */
+:root {
+  --bg-primary: #0a0f0a;
+  --bg-surface: #0f1a12;
+  --bg-card: #121e15;
+  --bg-hover: #162219;
+  --red-primary: #dc2626;
+  --red-hover: #ef4444;
+  --red-glow: rgba(220,38,38,0.15);
+  --emerald: #10b981;
+  --emerald-hover: #34d399;
+  --emerald-dim: #065f46;
+  --emerald-glow: rgba(16,185,129,0.15);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #1e3a2f;
+  --border-light: #2d5a4a;
+  --amber: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+}
+/* Grid pattern background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(16,185,129,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+.app-layout {
+  display: flex;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+/* === LEFT SIDEBAR === */
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.sidebar-header {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar-logo {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--red-primary), var(--emerald));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: white;
+}
+.sidebar-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.sidebar-version {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+.nav-section {
+  padding: 12px 0 4px;
+}
+.nav-section-title {
+  padding: 0 16px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+  user-select: none;
+}
+.nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+.nav-item.active {
+  background: var(--bg-hover);
+  color: var(--emerald);
+  border-left-color: var(--emerald);
+}
+.nav-item .nav-icon {
+  width: 18px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.nav-item .nav-badge {
+  margin-left: auto;
+  font-size: 10px;
+  background: var(--red-primary);
+  color: white;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+/* Collapsible submenu */
+.nav-submenu {
+  display: none;
+  padding-left: 12px;
+}
+.nav-submenu.open { display: block; }
+.nav-submenu .nav-item {
+  padding: 6px 16px;
+  font-size: 12px;
+}
+.nav-submenu .nav-item.active {
+  color: var(--red-primary);
+  border-left-color: var(--red-primary);
+}
+.nav-toggle {
+  margin-left: auto;
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+.nav-toggle.open { transform: rotate(90deg); }
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+.shutdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.shutdown-btn:hover {
+  background: rgba(220,38,38,0.1);
+  border-color: var(--red-primary);
+  color: var(--red-primary);
+}
+.sidebar-ip {
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+/* === MAIN CONTENT === */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+/* Top bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.topbar-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+.topbar-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+.topbar-btn.active {
+  background: var(--emerald-glow);
+  border-color: var(--emerald);
+  color: var(--emerald);
+}
+/* Page content */
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.page-content::-webkit-scrollbar { width: 6px; }
+.page-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+/* Page header */
+.page-header {
+  margin-bottom: 24px;
+}
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.page-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title .icon {
+  color: var(--emerald);
+}
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+.btn-primary {
+  background: var(--red-primary);
+  color: white;
+  border-color: var(--red-primary);
+}
+.btn-primary:hover {
+  background: var(--red-hover);
+}
+.btn-emerald {
+  background: var(--emerald);
+  color: #0a0f0a;
+}
+.btn-emerald:hover {
+  background: var(--emerald-hover);
+}
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+.btn-ghost:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+/* Toggle */
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toggle-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.toggle {
+  width: 40px;
+  height: 22px;
+  background: var(--border);
+  border-radius: 11px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+.toggle.on { background: var(--emerald); }
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+}
+.toggle.on::after { transform: translateX(18px); }
+.label-tunnel.active { background: rgba(16,185,129,.15) !important; color: var(--emerald) !important; }
+.flex-1 { flex: 1; }
+/* Form inputs */
+.form-group {
+  margin-bottom: 16px;
+}
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.form-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--emerald);
+  box-shadow: 0 0 0 2px var(--emerald-glow);
+}
+/* Label badges */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.label-local {
+  background: var(--emerald-glow);
+  color: var(--emerald);
+}
+.label-tunnel {
+  background: var(--red-glow);
+  color: var(--red-primary);
+}
+/* Warning banner */
+.warning {
+  background: var(--warning-bg);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--amber);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+}
+.warning-icon { font-size: 16px; flex-shrink: 0; }
+/* API Key row */
+.key-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.key-row:last-child { border-bottom: none; }
+.key-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 100px;
+}
+.key-value {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.key-date {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+/* Flex helpers */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+.ml-auto { margin-left: auto; }
+/* Hidden pages */
+.page { display: none; }
+.page.active { display: block; }
+/* Provider card grid */
+.provider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.provider-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.provider-card:hover {
+  border-color: var(--border-light);
+  background: var(--bg-hover);
+}
+.provider-card .provider-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.provider-card .provider-status {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.provider-card .provider-status.connected {
+  color: var(--emerald);
+}
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+.empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+.empty-state .empty-text {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+</style>
+</head>
+<body>
+<div class="app-layout">
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">S</div>
+      <div>
+        <div class="sidebar-title">SAM Router</div>
+      </div>
+      <span class="sidebar-version">v1.0</span>
+    </div>
+
+    <nav>
+      <!-- MAIN NAV -->
+      <div class="nav-section">
+        <div class="nav-item active" data-page="endpoint">
+          <span class="nav-icon">&#9889;</span>
+          Endpoint
+        </div>
+        <div class="nav-item" data-page="providers">
+          <span class="nav-icon">&#128279;</span>
+          Providers
+        </div>
+        <div class="nav-item" data-page="combos">
+          <span class="nav-icon">&#127891;</span>
+          Combos
+        </div>
+        <div class="nav-item" data-page="usage">
+          <span class="nav-icon">&#128200;</span>
+          Usage
+        </div>
+        <div class="nav-item" data-page="quota-tracker">
+          <span class="nav-icon">&#9201;</span>
+          Quota Tracker
+        </div>
+        <div class="nav-item" data-page="mitm">
+          <span class="nav-icon">&#128274;</span>
+          MITM
+        </div>
+        <div class="nav-item" data-page="cli-tools">
+          <span class="nav-icon">&#128187;</span>
+          CLI Tools
+        </div>
+      </div>
+
+      <!-- SYSTEM -->
+      <div class="nav-section">
+        <div class="nav-section-title">System</div>
+        <div class="nav-item" data-page="media-providers" id="media-toggle">
+          <span class="nav-icon">&#127916;</span>
+          Media Providers
+          <span class="nav-toggle" id="media-arrow">&#9654;</span>
+        </div>
+        <div class="nav-submenu" id="media-submenu">
+          <div class="nav-item" data-page="embedding">
+            <span class="nav-icon">&#128205;</span>
+            Embedding
+          </div>
+          <div class="nav-item" data-page="text-to-image">
+            <span class="nav-icon">&#127912;</span>
+            Text to Image
+          </div>
+          <div class="nav-item" data-page="text-to-speech">
+            <span class="nav-icon">&#127908;</span>
+            Text To Speech
+          </div>
+          <div class="nav-item" data-page="speech-to-text">
+            <span class="nav-icon">&#127909;</span>
+            Speech To Text
+          </div>
+          <div class="nav-item" data-page="web-fetch">
+            <span class="nav-icon">&#127760;</span>
+            Web Fetch/Search
+          </div>
+        </div>
+        <div class="nav-item" data-page="proxy-pools">
+          <span class="nav-icon">&#128752;</span>
+          Proxy Pools
+        </div>
+        <div class="nav-item" data-page="skills">
+          <span class="nav-icon">&#127775;</span>
+          Skills
+        </div>
+        <div class="nav-item" data-page="console-log">
+          <span class="nav-icon">&#128196;</span>
+          Console Log
+        </div>
+        <div class="nav-item" data-page="settings">
+          <span class="nav-icon">&#9881;</span>
+          Settings
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="shutdown-btn" onclick="alert('Shutdown initiated...')">
+        &#9632; Shutdown
+      </button>
+      <div class="sidebar-ip">127.0.0.1:2500</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <div class="topbar">
+      <button class="topbar-btn" onclick="alert('Donate')">&#128150; Donate</button>
+      <button class="topbar-btn active" id="theme-btn" onclick="toggleTheme()">&#9788;</button>
+      <button class="topbar-btn">&#9783;</button>
+    </div>
+
+    <div class="page-content">
+      <!-- PAGE: Endpoint -->
+      <div class="page active" id="page-endpoint">
+        <div class="page-header">
+          <h1 class="page-title">Endpoint</h1>
+          <p class="page-subtitle">Manage your SAM Router API endpoints</p>
+        </div>
+
+        <!-- API Endpoint Card -->
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">&#9889;</span> API Endpoint
+          </div>
+          <!-- Local -->
+          <div class="form-group">
+            <div class="flex items-center gap-2">
+              <span class="label label-local">&#9679; Local</span>
+            </div>
+            <div class="mt-2 flex items-center gap-2">
+              <input class="form-input" type="text" value="http://127.0.0.1:2500/v1" readonly id="endpoint-local">
+              <button class="btn btn-ghost" onclick="copyEndpoint('endpoint-local')" title="Copy">&#128203;</button>
+            </div>
+          </div>
+          <!-- Cloudflare Tunnel -->
+          <div class="section-divider"></div>
+          <div class="form-group mt-2">
+            <div class="flex items-center gap-2">
+              <span class="label label-tunnel" id="tunnel-badge">&#9679; Tunnel</span>
+              <div class="flex items-center gap-2 flex-1" id="tunnel-row">
+                <div id="tunnel-off" class="flex items-center gap-2 flex-1">
+                  <input class="form-input flex-1" type="text" value="Enable tunnel to get URL" readonly disabled style="opacity:0.5">
+                  <button class="btn btn-primary" onclick="enableTunnel()" id="tunnel-enable-btn">&#9889; Enable</button>
+                </div>
+                <div id="tunnel-loading" class="flex items-center gap-2 flex-1" style="display:none">
+                  <input class="form-input flex-1" type="text" value="Creating tunnel..." readonly disabled style="opacity:0.5">
+                  <button class="btn btn-ghost" onclick="cancelTunnel()">&#9632; Cancel</button>
+                </div>
+                <div id="tunnel-ready" class="flex items-center gap-2 flex-1" style="display:none">
+                  <input class="form-input flex-1" type="text" value="" readonly id="tunnel-url">
+                  <button class="btn btn-ghost" onclick="copyEndpoint('tunnel-url')" title="Copy">&#128203;</button>
+                  <button class="btn btn-ghost" onclick="disableTunnel()" style="color:var(--red-primary)" title="Disable">&#9608;</button>
+                </div>
+                <div id="tunnel-error" class="flex items-center gap-2 flex-1" style="display:none">
+                  <div class="warning flex-1" style="margin:0">
+                    <span class="warning-icon">&#9888;</span>
+                    <div id="tunnel-error-msg">Security required: Change dashboard password first</div>
+                  </div>
+                  <button class="btn btn-primary" onclick="enableTunnel()">&#9889; Enable</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tailscale -->
+          <div class="form-group mt-2">
+            <div class="flex items-center gap-2">
+              <span class="label label-tunnel" id="ts-badge">&#9679; Tailscale</span>
+              <div class="flex items-center gap-2 flex-1" id="ts-row">
+                <div id="ts-off" class="flex items-center gap-2 flex-1">
+                  <input class="form-input flex-1" type="text" value="Enable Tailscale to get URL" readonly disabled style="opacity:0.5">
+                  <button class="btn btn-primary" onclick="enableTS()" id="ts-enable-btn">&#9889; Enable</button>
+                </div>
+                <div id="ts-loading" class="flex items-center gap-2 flex-1" style="display:none">
+                  <input class="form-input flex-1" type="text" value="Connecting..." readonly disabled style="opacity:0.5">
+                  <button class="btn btn-ghost" onclick="cancelTS()">&#9632; Cancel</button>
+                </div>
+                <div id="ts-ready" class="flex items-center gap-2 flex-1" style="display:none">
+                  <input class="form-input flex-1" type="text" value="" readonly id="ts-url">
+                  <button class="btn btn-ghost" onclick="copyEndpoint('ts-url')" title="Copy">&#128203;</button>
+                  <button class="btn btn-ghost" onclick="disableTS()" style="color:var(--red-primary)" title="Disable">&#9608;</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Security Warning -->
+          <div class="warning">
+            <span class="warning-icon">&#9888;</span>
+            <div>Change default dashboard password before activating tunnel. <a href="#" style="color:var(--amber)" onclick="navigateTo('settings')">Open settings</a></div>
+          </div>
+        </div>
+
+        <!-- Token Saver Card -->
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">&#128190;</span> Token Saver
+          </div>
+          <!-- RTK -->
+          <div class="flex items-center justify-between">
+            <div>
+              <div style="font-size:13px;color:var(--text-primary)">Compress tool output (RTK)</div>
+              <div style="font-size:11px;color:var(--text-muted)">Save 20-40% input tokens per request</div>
+            </div>
+            <div class="toggle on" id="rtk-toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="section-divider mt-4"></div>
+          <!-- Caveman Mode -->
+          <div class="flex items-center justify-between mt-2">
+            <div>
+              <div style="font-size:13px;color:var(--text-primary)">Compress LLM output (Caveman)</div>
+              <div style="font-size:11px;color:var(--text-muted)">Terse replies, save up to 65% output tokens</div>
+            </div>
+            <div class="flex gap-2 items-center">
+              <button class="btn btn-ghost caveman-btn" style="padding:4px 10px;font-size:11px" data-level="lite" onclick="setCaveman('lite')">Lite</button>
+              <button class="btn btn-emerald caveman-btn active" style="padding:4px 10px;font-size:11px" data-level="full" onclick="setCaveman('full')">Full</button>
+              <button class="btn btn-ghost caveman-btn" style="padding:4px 10px;font-size:11px" data-level="ultra" onclick="setCaveman('ultra')">Ultra</button>
+              <div class="toggle" id="caveman-toggle" onclick="toggleCaveman()"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- API Keys Card -->
+        <div class="card">
+          <div class="flex items-center justify-between mb-4">
+            <div class="card-title" style="margin-bottom:0">
+              <span class="icon">&#128273;</span> API Keys
+            </div>
+            <button class="btn btn-primary" onclick="showCreateKeyModal()">&#43; Create Key</button>
+          </div>
+          <!-- Require API Key toggle -->
+          <div class="flex items-center justify-between pb-4 mb-4" style="border-bottom:1px solid var(--border)">
+            <div>
+              <div style="font-size:13px;color:var(--text-primary);font-weight:600">Require API key</div>
+              <div style="font-size:11px;color:var(--text-muted)">Requests without a valid key will be rejected</div>
+            </div>
+            <div class="toggle on" id="require-key-toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <!-- Keys List -->
+          <div id="keys-list">
+            <!-- Default key -->
+            <div class="key-row">
+              <div>
+                <div class="key-name">Default</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                  <code style="font-size:11px;color:var(--text-muted);font-family:'SF Mono',monospace" id="key-default-display">sam_sr_k...7l0</code>
+                  <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px" onclick="toggleKeyVis('key-default')" title="Show/Hide">&#128065;</button>
+                  <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px" onclick="copyKey('sam_sr_k7x9m2p4q8v1n5j3h6f0d2s4a7g9l0')" title="Copy">&#128203;</button>
+                </div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:4px">Created 5/25/2026</div>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="toggle on" onclick="this.classList.toggle('on')" title="Active/Pause"></div>
+                <button style="background:none;border:none;color:var(--red-primary);cursor:pointer;font-size:14px;padding:4px" onclick="deleteKey('Default')" title="Delete">&#128465;</button>
+              </div>
+            </div>
+            <!-- Additional keys populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: Providers -->
+      <div class="page" id="page-providers">
+        <div class="page-header">
+          <h1 class="page-title">Providers</h1>
+          <p class="page-subtitle">Manage AI provider connections</p>
+        </div>
+        <div class="flex gap-2 mb-4">
+          <button class="btn btn-primary">&#43; Add Anthropic Compatible</button>
+          <button class="btn btn-emerald">&#43; Add OpenAI Compatible</button>
+          <button class="btn btn-ghost ml-auto">&#128260; Test All</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Custom Providers</div>
+          <div class="empty-state">
+            <div class="empty-icon">&#128279;</div>
+            <div class="empty-text">No custom providers configured</div>
+            <button class="btn btn-primary">&#43; Add Provider</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">OAuth Providers</div>
+          <div class="empty-state">
+            <div class="empty-icon">&#128275;</div>
+            <div class="empty-text">No OAuth providers configured</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Free Tier Providers</div>
+          <div class="empty-state">
+            <div class="empty-icon">&#127873;</div>
+            <div class="empty-text">No free providers configured</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: Combos -->
+      <div class="page" id="page-combos">
+        <div class="page-header">
+          <h1 class="page-title">Combos</h1>
+          <p class="page-subtitle">Create model combos with fallback support</p>
+        </div>
+        <button class="btn btn-primary mb-4">&#43; Create Combo</button>
+        <div class="card">
+          <div class="card-title">my-coding-stack</div>
+          <div style="font-size:12px;color:var(--text-secondary);font-family:monospace">
+            1. cc/claude-opus-4-6<br>
+            2. glm/glm-4.7<br>
+            3. if/kimi-k2-thinking
+          </div>
+          <div class="flex gap-2 mt-4">
+            <div class="toggle-wrap">
+              <span class="toggle-label">Round Robin</span>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <button class="btn btn-ghost ml-auto">&#128203; Copy</button>
+            <button class="btn btn-ghost">&#9998; Edit</button>
+            <button class="btn btn-ghost" style="color:var(--red-primary)">&#128465; Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: Usage -->
+      <div class="page" id="page-usage">
+        <div class="page-header">
+          <h1 class="page-title">Usage</h1>
+          <p class="page-subtitle">Monitor API usage, token consumption, and request logs</p>
+        </div>
+        <div class="card">
+          <div class="card-title">&#128200; Overview</div>
+          <div class="flex gap-4">
+            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
+              <div style="font-size:11px;color:var(--text-muted)">Total Requests</div>
+              <div style="font-size:24px;font-weight:700;color:var(--emerald)">1,247</div>
+            </div>
+            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
+              <div style="font-size:11px;color:var(--text-muted)">Input Tokens</div>
+              <div style="font-size:24px;font-weight:700;color:var(--emerald)">2.4M</div>
+            </div>
+            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
+              <div style="font-size:11px;color:var(--text-muted)">Output Tokens</div>
+              <div style="font-size:24px;font-weight:700;color:var(--emerald)">890K</div>
+            </div>
+            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
+              <div style="font-size:11px;color:var(--text-muted)">Est. Savings</div>
+              <div style="font-size:24px;font-weight:700;color:var(--red-primary)">$0.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: Quota Tracker -->
+      <div class="page" id="page-quota-tracker">
+        <div class="page-header">
+          <h1 class="page-title">Quota Tracker</h1>
+          <p class="page-subtitle">Monitor provider quota usage and reset times</p>
+        </div>
+        <div class="flex gap-2 mb-4">
+          <button class="btn btn-ghost">All Accounts</button>
+          <button class="btn btn-ghost">Expiring First</button>
+          <button class="btn btn-ghost">Turn Off Empty</button>
+          <button class="btn btn-ghost ml-auto">&#8635; Auto-refresh (33s)</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Account 1</div>
+          <div style="font-size:12px;color:var(--text-secondary)">
+            Type: credit<br>
+            Used: 50/50 (100%)<br>
+            Expires: in 6d 11h 7m
+          </div>
+          <div class="flex gap-2 mt-4">
+            <button class="btn btn-ghost">&#8635; Refresh</button>
+            <button class="btn btn-ghost">&#9998; Edit</button>
+            <button class="btn btn-ghost" style="color:var(--red-primary)">&#128465; Delete</button>
+            <div class="toggle on ml-auto" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: MITM -->
+      <div class="page" id="page-mitm">
+        <div class="page-header">
+          <h1 class="page-title">MITM Proxy</h1>
+          <p class="page-subtitle">Intercept CLI tool traffic and route through SAM Router</p>
+        </div>
+        <div class="warning mb-4">
+          <span class="warning-icon">&#9888;</span>
+          <div>MITM intercepts HTTPS traffic. May violate provider ToS. Use at own risk.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">MITM Server</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">Status: Stopped</div>
+          <div class="form-group">
+            <label class="form-label">SAM Router Base URL</label>
+            <input class="form-input" type="text" value="http://localhost:2500" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">API Key</label>
+            <input class="form-input" type="text" value="sam_sr_default" readonly>
+          </div>
+          <button class="btn btn-primary">&#9654; Start Server</button>
+        </div>
+        <div class="card mt-4">
+          <div class="card-title">Tool Interception</div>
+          <div class="flex gap-3 mt-2">
+            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
+              <div style="font-size:12px;font-weight:600">Antigravity</div>
+              <div style="font-size:11px;color:var(--text-muted)">Server off</div>
+            </div>
+            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
+              <div style="font-size:12px;font-weight:600">GitHub Copilot</div>
+              <div style="font-size:11px;color:var(--text-muted)">Server off</div>
+            </div>
+            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
+              <div style="font-size:12px;font-weight:600">Kiro</div>
+              <div style="font-size:11px;color:var(--text-muted)">Server off</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: CLI Tools -->
+      <div class="page" id="page-cli-tools">
+        <div class="page-header">
+          <h1 class="page-title">CLI Tools</h1>
+          <p class="page-subtitle">Configure SAM Router for CLI tools</p>
+        </div>
+        <div class="card">
+          <div class="card-title">&#128187; CLI Configuration</div>
+          <div style="font-size:13px;color:var(--text-secondary)">Configure your CLI tools to use SAM Router as the API proxy.</div>
+          <div class="form-group mt-4">
+            <label class="form-label">Base URL</label>
+            <input class="form-input" type="text" value="http://127.0.0.1:2500/v1" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">API Key</label>
+            <input class="form-input" type="text" value="sam_sr_k7x9m2p4q8v1n5j3h6f0d2s4a7g9l0" readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: Embedding -->
+      <div class="page" id="page-embedding">
+        <div class="page-header">
+          <h1 class="page-title">Embedding</h1>
+          <p class="page-subtitle">Manage your Embedding providers</p>
+        </div>
+        <div class="flex gap-2 mb-4">
+          <button class="btn btn-primary">&#43; Add Custom Embedding</button>
+        </div>
+        <div class="provider-grid">
+          <div class="provider-card"><div class="provider-name">Gemini</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">OpenRouter</div><div class="provider-status connected">5 Connected</div></div>
+          <div class="provider-card"><div class="provider-name">OpenAI</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">Mistral</div><div class="provider-status connected">2 Connected</div></div>
+        </div>
+      </div>
+
+      <!-- PAGE: Text to Image -->
+      <div class="page" id="page-text-to-image">
+        <div class="page-header">
+          <h1 class="page-title">Text to Image</h1>
+          <p class="page-subtitle">Manage Text to Image providers</p>
+        </div>
+        <div class="provider-grid">
+          <div class="provider-card"><div class="provider-name">Gemini</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">OpenAI</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">Stability AI</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">Fal.ai</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">xAI (Grok)</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">Runway ML</div><div class="provider-status">No connections</div></div>
+        </div>
+      </div>
+
+      <!-- PAGE: Text To Speech -->
+      <div class="page" id="page-text-to-speech">
+        <div class="page-header">
+          <h1 class="page-title">Text To Speech</h1>
+          <p class="page-subtitle">Manage Text To Speech providers</p>
+        </div>
+        <div class="provider-grid">
+          <div class="provider-card"><div class="provider-name">Gemini</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">OpenAI</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">ElevenLabs</div><div class="provider-status">No connections</div></div>
+        </div>
+      </div>
+
+      <!-- PAGE: Speech To Text -->
+      <div class="page" id="page-speech-to-text">
+        <div class="page-header">
+          <h1 class="page-title">Speech To Text</h1>
+          <p class="page-subtitle">Manage Speech To Text providers</p>
+        </div>
+        <div class="provider-grid">
+          <div class="provider-card"><div class="provider-name">Gemini</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">OpenAI</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">Groq</div><div class="provider-status connected">5 Connected</div></div>
+          <div class="provider-card"><div class="provider-name">Deepgram</div><div class="provider-status">No connections</div></div>
+          <div class="provider-card"><div class="provider-name">AssemblyAI</div><div class="provider-status">No connections</div></div>
+        </div>
+      </div>
+
+      <!-- PAGE: Web Fetch/Search -->
+      <div class="page" id="page-web-fetch">
+        <div class="page-header">
+          <h1 class="page-title">Web Fetch & Search</h1>
+          <p class="page-subtitle">Manage web providers</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Web Search (15 providers)</div>
+          <div class="provider-grid">
+            <div class="provider-card"><div class="provider-name">Gemini</div><div class="provider-status">No connections</div></div>
+            <div class="provider-card"><div class="provider-name">Perplexity</div><div class="provider-status">No connections</div></div>
+            <div class="provider-card"><div class="provider-name">Tavily</div><div class="provider-status">No connections</div></div>
+            <div class="provider-card"><div class="provider-name">Brave Search</div><div class="provider-status">No connections</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Web Fetch (4 providers)</div>
+          <div class="provider-grid">
+            <div class="provider-card"><div class="provider-name">Tavily</div><div class="provider-status">No connections</div></div>
+            <div class="provider-card"><div class="provider-name">Firecrawl</div><div class="provider-status">No connections</div></div>
+            <div class="provider-card"><div class="provider-name">Jina Reader</div><div class="provider-status">No connections</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: Proxy Pools -->
+      <div class="page" id="page-proxy-pools">
+        <div class="page-header">
+          <h1 class="page-title">Proxy Pools</h1>
+          <p class="page-subtitle">Manage reusable per-connection proxies</p>
+        </div>
+        <div class="flex gap-2 mb-4">
+          <button class="btn btn-ghost">Vercel Relay</button>
+          <button class="btn btn-ghost">Batch Import</button>
+          <button class="btn btn-primary">&#43; Add Proxy Pool</button>
+        </div>
+        <div class="card">
+          <div style="font-size:12px;color:var(--text-muted)">Total: 0 | Active: 0</div>
+          <div class="empty-state">
+            <div class="empty-icon">&#128752;</div>
+            <div class="empty-text">No proxy pools configured. Create a pool and assign to connections.</div>
+            <button class="btn btn-primary">&#43; Add Proxy Pool</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: Skills -->
+      <div class="page" id="page-skills">
+        <div class="page-header">
+          <h1 class="page-title">Skills</h1>
+          <p class="page-subtitle">Manage AI skill capabilities</p>
+        </div>
+        <div class="card">
+          <div class="empty-state">
+            <div class="empty-icon">&#127775;</div>
+            <div class="empty-text">No skills configured</div>
+            <button class="btn btn-primary">&#43; Add Skill</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: Console Log -->
+      <div class="page" id="page-console-log">
+        <div class="page-header">
+          <h1 class="page-title">Console Log</h1>
+          <p class="page-subtitle">Live server console output</p>
+        </div>
+        <div class="flex gap-2 mb-4">
+          <button class="btn btn-ghost" onclick="clearConsole()">&#128465; Clear</button>
+        </div>
+        <div class="card" id="console-output" style="font-family:'SF Mono','Fira Code',monospace;font-size:11px;max-height:500px;overflow-y:auto;line-height:1.8">
+          <div style="color:var(--text-muted)">[19:51:09] <span style="color:var(--emerald)">[PENDING]</span> provider=openai-compatible-chat | model=mimo-v2-pro</div>
+          <div style="color:var(--text-muted)">[19:51:09] <span style="color:var(--amber)">[AUTH]</span> API Key: sam_sr_k...7e08</div>
+          <div style="color:var(--text-muted)">[19:51:09] <span style="color:#a78bfa">[ROUTING]</span> xmtp/mimo-v2-pro -> openai-compatible-chat</div>
+          <div style="color:var(--text-muted)">[19:51:09] <span style="color:var(--red-primary)">[FORMAT]</span> openai -> openai | stream=true</div>
+          <div style="color:var(--text-muted)">[19:51:10] <span style="color:var(--emerald)">[USAGE]</span> in=59831 | out=161 | account=want | cache_read=59328</div>
+          <div style="color:var(--text-muted)">[19:51:10] <span style="color:#60a5fa">[STREAM]</span> 185ms | complete</div>
+        </div>
+      </div>
+
+      <!-- PAGE: Settings -->
+      <div class="page" id="page-settings">
+        <div class="page-header">
+          <h1 class="page-title">Settings</h1>
+          <p class="page-subtitle">Configure SAM Router settings</p>
+        </div>
+        <div class="card">
+          <div class="card-title">&#9881; General</div>
+          <div class="form-group">
+            <label class="form-label">Dashboard Password</label>
+            <input class="form-input" type="password" placeholder="Set password for dashboard">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Port</label>
+            <input class="form-input" type="number" value="2500" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Debug Mode</label>
+            <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">&#128274; Security</div>
+          <div class="form-group">
+            <label class="form-label">API Key Prefix</label>
+            <input class="form-input" type="text" value="sam_sr_" readonly>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- .page-content -->
+  </main>
+</div>
+
+<script>
+// Navigation
+document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+  item.addEventListener('click', () => {
+    const page = item.dataset.page;
+    // Toggle media submenu
+    if (page === 'media-providers') {
+      document.getElementById('media-submenu').classList.toggle('open');
+      document.getElementById('media-arrow').classList.toggle('open');
+      return;
+    }
+    // Activate page
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const target = document.getElementById('page-' + page);
+    if (target) {
+      target.classList.add('active');
+      item.classList.add('active');
+    }
+  });
+});
+
+// Theme toggle placeholder
+function toggleTheme() {
+  document.getElementById('theme-btn').classList.toggle('active');
+}
+
+// Console clear
+function clearConsole() {
+  document.getElementById('console-output').innerHTML =
+    '<div style="color:var(--text-muted)">Console cleared.</div>';
+}
+
+// === ENDPOINT PAGE FUNCTIONS ===
+
+// Copy endpoint URL
+function copyEndpoint(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.value).then(() => {
+    const btn = el.nextElementSibling;
+    if (btn) { btn.textContent = '\u2705'; setTimeout(() => { btn.textContent = '\u{1F4CB}'; }, 1500); }
+  });
+}
+
+// Copy API key
+function copyKey(key) {
+  navigator.clipboard.writeText(key);
+}
+
+// Toggle key visibility
+function toggleKeyVis(id) {
+  const el = document.getElementById(id + '-display');
+  if (!el) return;
+  const full = 'sam_sr_k7x9m2p4q8v1n5j3h6f0d2s4a7g9l0';
+  const masked = 'sam_sr_k...7l0';
+  el.textContent = el.textContent === masked ? full : masked;
+}
+
+// === CLOUDFLARE TUNNEL ===
+function enableTunnel() {
+  document.getElementById('tunnel-off').style.display = 'none';
+  document.getElementById('tunnel-error').style.display = 'none';
+  document.getElementById('tunnel-loading').style.display = 'flex';
+  document.getElementById('tunnel-badge').classList.add('active');
+  // Simulate tunnel creation
+  setTimeout(() => {
+    document.getElementById('tunnel-loading').style.display = 'none';
+    document.getElementById('tunnel-ready').style.display = 'flex';
+    document.getElementById('tunnel-url').value = 'https://sam-router-k7x9m2p4.trycloudflare.com/v1';
+  }, 3000);
+}
+
+function cancelTunnel() {
+  document.getElementById('tunnel-loading').style.display = 'none';
+  document.getElementById('tunnel-off').style.display = 'flex';
+  document.getElementById('tunnel-badge').classList.remove('active');
+}
+
+function disableTunnel() {
+  document.getElementById('tunnel-ready').style.display = 'none';
+  document.getElementById('tunnel-off').style.display = 'flex';
+  document.getElementById('tunnel-badge').classList.remove('active');
+}
+
+// === TAILSCALE ===
+function enableTS() {
+  document.getElementById('ts-off').style.display = 'none';
+  document.getElementById('ts-loading').style.display = 'flex';
+  document.getElementById('ts-badge').classList.add('active');
+  // Simulate Tailscale connect
+  setTimeout(() => {
+    document.getElementById('ts-loading').style.display = 'none';
+    document.getElementById('ts-ready').style.display = 'flex';
+    document.getElementById('ts-url').value = 'http://sam-router.your-tailnet.ts.net:2500/v1';
+  }, 4000);
+}
+
+function cancelTS() {
+  document.getElementById('ts-loading').style.display = 'none';
+  document.getElementById('ts-off').style.display = 'flex';
+  document.getElementById('ts-badge').classList.remove('active');
+}
+
+function disableTS() {
+  document.getElementById('ts-ready').style.display = 'none';
+  document.getElementById('ts-off').style.display = 'flex';
+  document.getElementById('ts-badge').classList.remove('active');
+}
+
+// === CAVEMAN MODE ===
+function setCaveman(level) {
+  document.querySelectorAll('.caveman-btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.classList.remove('btn-emerald');
+    btn.classList.add('btn-ghost');
+    if (btn.dataset.level === level) {
+      btn.classList.add('active');
+      btn.classList.remove('btn-ghost');
+      btn.classList.add('btn-emerald');
+    }
+  });
+}
+
+function toggleCaveman() {
+  document.getElementById('caveman-toggle').classList.toggle('on');
+}
+
+// === API KEYS ===
+const apiKeyStore = {
+  keys: [{ id: 'default', name: 'Default', key: 'sam_sr_k7x9m2p4q8v1n5j3h6f0d2s4a7g9l0', created: '5/25/2026', active: true }],
+  visible: new Set()
+};
+
+function showCreateKeyModal() {
+  const modal = document.getElementById('create-key-modal');
+  if (modal) { modal.style.display = 'flex'; return; }
+  // Create modal dynamically
+  const div = document.createElement('div');
+  div.id = 'create-key-modal';
+  div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:999';
+  div.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;width:400px;max-width:90vw">
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:16px">Create API Key</h3>
+      <input type="text" id="new-key-name" placeholder="Key Name (e.g. Production Key)" style="width:100%;padding:10px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size:13px;margin-bottom:16px;outline:none">
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="createKey()">Create</button>
+        <button class="btn btn-ghost" style="flex:1" onclick="closeCreateKeyModal()">Cancel</button>
+      </div>
+    </div>`;
+  document.body.appendChild(div);
+}
+
+function closeCreateKeyModal() {
+  const modal = document.getElementById('create-key-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function createKey() {
+  const nameInput = document.getElementById('new-key-name');
+  const name = nameInput.value.trim();
+  if (!name) return;
+  // Generate fake SAM Router key
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let rand = '';
+  for (let i = 0; i < 32; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+  const newKey = { id: 'key-' + Date.now(), name, key: 'sam_sr_' + rand, created: '5/25/2026', active: true };
+  apiKeyStore.keys.push(newKey);
+  closeCreateKeyModal();
+  // Show created key modal
+  showCreatedKeyModal(newKey);
+  renderKeys();
+}
+
+function showCreatedKeyModal(key) {
+  const div = document.createElement('div');
+  div.id = 'created-key-modal';
+  div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:999';
+  div.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;width:420px;max-width:90vw">
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">API Key Created</h3>
+      <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:12px;margin-bottom:16px">
+        <p style="font-size:13px;font-weight:600;color:#92400e;margin-bottom:4px">Save this key now!</p>
+        <p style="font-size:12px;color:#b45309">This is the only time you will see this key. Store it securely.</p>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <input type="text" value="${key.key}" readonly style="flex:1;padding:10px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size:12px;font-family:monospace">
+        <button class="btn btn-ghost" onclick="copyKey('${key.key}')">\u{1F4CB} Copy</button>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="closeCreatedKeyModal()">Done</button>
+    </div>`;
+  document.body.appendChild(div);
+}
+
+function closeCreatedKeyModal() {
+  const modal = document.getElementById('created-key-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function deleteKey(name) {
+  if (!confirm('Delete API key "' + name + '"?')) return;
+  apiKeyStore.keys = apiKeyStore.keys.filter(k => k.name !== name);
+  renderKeys();
+}
+
+function renderKeys() {
+  const container = document.getElementById('keys-list');
+  if (!container) return;
+  container.innerHTML = '';
+  apiKeyStore.keys.forEach(k => {
+    const masked = k.key.slice(0, 8) + '...' + k.key.slice(-4);
+    const row = document.createElement('div');
+    row.className = 'key-row';
+    row.innerHTML = `
+      <div>
+        <div class="key-name">${k.name}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+          <code style="font-size:11px;color:var(--text-muted);font-family:monospace" id="${k.id}-display">${apiKeyStore.visible.has(k.id) ? k.key : masked}</code>
+          <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px" onclick="toggleKeyVis('${k.id}')" title="Show/Hide">\u{1F441}</button>
+          <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px" onclick="copyKey('${k.key}')" title="Copy">\u{1F4CB}</button>
+        </div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:4px">Created ${k.created}</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="toggle ${k.active ? 'on' : ''}" onclick="this.classList.toggle('on')" title="Active/Pause"></div>
+        <button style="background:none;border:none;color:var(--red-primary);cursor:pointer;font-size:14px;padding:4px" onclick="deleteKey('${k.name}')" title="Delete">\u{1F5D1}</button>
+      </div>`;
+    container.appendChild(row);
+  });
+}
+
+// Override toggleKeyVis for dynamic keys
+const _origToggleKeyVis = toggleKeyVis;
+toggleKeyVis = function(id) {
+  if (apiKeyStore.keys.find(k => k.id === id)) {
+    const el = document.getElementById(id + '-display');
+    if (!el) return;
+    const key = apiKeyStore.keys.find(k => k.id === id);
+    const masked = key.key.slice(0, 8) + '...' + key.key.slice(-4);
+    if (apiKeyStore.visible.has(id)) {
+      apiKeyStore.visible.delete(id);
+      el.textContent = masked;
+    } else {
+      apiKeyStore.visible.add(id);
+      el.textContent = key.key;
+    }
+  } else {
+    _origToggleKeyVis(id);
+  }
+};
+
+// === NAVIGATION (via JS) ===
+function navigateTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+    if (item.dataset.page === page) item.classList.add('active');
+  });
+}
+</script>
+</body>
+</html>
