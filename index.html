@@ -792,7 +792,6 @@ body::before {
       <button class="topbar-btn hamburger" onclick="toggleSidebar()">&#9776;</button>
       <input type="text" class="topbar-search" placeholder="Search providers..." />
       <div class="topbar-right">
-        <button class="topbar-btn" onclick="alert('Donate')">&#128150; Donate</button>
         <button class="topbar-btn active" id="theme-btn" onclick="toggleTheme()">&#9788;</button>
         <button class="topbar-btn">&#9783;</button>
       </div>
@@ -2389,12 +2388,31 @@ toggleKeyVis = function(id) {
 // === NAVIGATION (via JS) ===
 // ========== SIDEBAR MOBILE TOGGLE ==========
 function toggleSidebar() {
-  document.querySelector('.sidebar').classList.toggle('open');
-  document.querySelector('.sidebar-overlay').classList.toggle('open');
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  if (window.innerWidth <= 768) {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  } else {
+    sidebar.classList.toggle('closed');
+  }
 }
+// Close sidebar on nav item click (mobile)
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    if (window.innerWidth <= 768) closeSidebar();
+  });
+});
+
 function closeSidebar() {
-  document.querySelector('.sidebar').classList.remove('open');
-  document.querySelector('.sidebar-overlay').classList.remove('open');
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  if (window.innerWidth <= 768) {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  } else {
+    sidebar.classList.toggle('closed');
+  }
 }
 
 function navigateTo(page) {
