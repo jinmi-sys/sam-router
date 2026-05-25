@@ -1853,17 +1853,73 @@ body::before {
           <p class="page-subtitle">Manage reusable per-connection proxies</p>
         </div>
         <div class="flex gap-2 mb-4">
-          <button class="btn btn-ghost">Vercel Relay</button>
-          <button class="btn btn-ghost">Batch Import</button>
-          <button class="btn btn-primary">&#43; Add Proxy Pool</button>
+          <button class="btn btn-ghost" onclick="alert('Vercel Relay — Coming soon')">Vercel Relay</button>
+          <button class="btn btn-ghost" onclick="alert('Batch Import — Coming soon')">Batch Import</button>
+          <button class="btn btn-primary" onclick="alert('Add Proxy Pool — Coming soon')">&#43; Add Proxy Pool</button>
         </div>
-        <div class="card">
-          <div style="font-size:12px;color:var(--text-muted)">Total: 0 | Active: 0</div>
-          <div class="empty-state">
-            <div class="empty-icon">&#128752;</div>
-            <div class="empty-text">No proxy pools configured. Create a pool and assign to connections.</div>
-            <button class="btn btn-primary">&#43; Add Proxy Pool</button>
+
+        <!-- Stats -->
+        <div class="stats-grid mb-4">
+          <div class="stat-card"><div class="stat-label">Total Pools</div><div class="stat-value" style="font-size:24px">3</div></div>
+          <div class="stat-card"><div class="stat-label">Online</div><div class="stat-value" style="font-size:24px;color:var(--emerald)">8</div></div>
+          <div class="stat-card"><div class="stat-label">Offline</div><div class="stat-value" style="font-size:24px;color:var(--red)">2</div></div>
+          <div class="stat-card"><div class="stat-label">Shared</div><div class="stat-value" style="font-size:24px;color:var(--amber)">1</div></div>
+        </div>
+
+        <!-- Pool Cards -->
+        <div class="card mb-3">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-weight:600;font-size:14px">Thread 1 <span class="badge badge-success" style="font-size:10px;margin-left:6px">Online</span></div>
+              <div style="font-size:12px;color:var(--text-muted)">http://...com:7103/user/thread_1</div>
+            </div>
+            <div style="font-size:12px">
+              <span style="color:var(--text-muted)">IP:</span> <code style="background:var(--bg-hover);padding:2px 6px;border-radius:3px;font-size:11px">114.4.22.209</code>
+              <span style="color:var(--text-muted);margin-left:8px">Usage:</span> 5 times
+            </div>
           </div>
+          <div style="font-size:11px;color:var(--text-muted);display:flex;justify-content:space-between">
+            <div class="flex gap-3">
+              <span>Original domain <code style="background:var(--bg-hover);padding:1px 4px;border-radius:2px;font-size:10px">gen-ai-solutions-ddl.llse.net</code></span>
+              <span><span class="dot dot-info"></span>100 connections</span>
+            </div>
+            <div class="flex gap-2">
+              <span><span class="dot dot-info"></span>Used by 2 keys</span>
+              <span>&#128203;4</span>
+              <span>&#128336;5.0ms</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-weight:600;font-size:14px">Perplexity <span class="badge" style="font-size:10px;margin-left:6px;background:var(--amber);color:#000">Shared</span></div>
+              <div style="font-size:12px;color:var(--text-muted)">perplexity.ai proxy</div>
+            </div>
+            <div style="font-size:12px">
+              <span style="color:var(--text-muted)">Usage:</span> 1 time
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);display:flex;justify-content:space-between">
+            <span>Shared pool — used by Providers</span>
+            <span><span class="dot dot-info"></span>Used by 3 keys</span>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-weight:600;font-size:14px">New POOL <span class="badge badge-error" style="font-size:10px;margin-left:6px">Offline</span></div>
+              <div style="font-size:12px;color:var(--text-muted)">test pool — not active</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted)">No connections. Configure endpoints to activate.</div>
+        </div>
+
+        <div class="flex gap-2 mt-4" style="justify-content:flex-end">
+          <button class="btn btn-ghost btn-sm">Blocker rules</button>
+          <button class="btn btn-ghost btn-sm">Refresh all</button>
         </div>
       </div>
 
