@@ -1992,124 +1992,6 @@ body::before {
 </div>
 
 <script>
-// ============ API Integration ============
-const API_BASE = window.location.origin;
-
-async function apiFetch(endpoint, options = {}) {
-  try {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
-      headers: { 'Content-Type': 'application/json' },
-      ...options
-    });
-    return await res.json();
-  } catch (e) {
-    console.error('API Error:', e);
-    return null;
-  }
-}
-
-// Health check
-async function checkHealth() {
-  const data = await apiFetch('/health');
-  if (data) {
-    const statusEl = document.querySelector('.status-badge');
-    if (statusEl) {
-      statusEl.className = 'status-badge online';
-      statusEl.textContent = '● Online';
-    }
-    // Update version in sidebar if exists
-    const verEl = document.querySelector('.version-tag');
-    if (verEl) verEl.textContent = `v${data.version}`;
-  }
-}
-
-// Load API keys into Endpoint page
-async function loadApiKeys() {
-  const data = await apiFetch('/api/keys');
-  if (data && data.keys) {
-    const container = document.querySelector('.api-keys-list');
-    if (container) {
-      container.innerHTML = data.keys.map(k => `
-        <div class="key-row">
-          <div class="key-info">
-            <span class="key-name">${k.name}</span>
-            <code class="key-preview">${k.key.substring(0, 12)}...${k.key.slice(-4)}</code>
-          </div>
-          <div class="key-actions">
-            <span class="badge badge-${k.enabled ? 'success' : 'danger'}">${k.enabled ? 'Active' : 'Disabled'}</span>
-            <button class="btn btn-ghost btn-sm" onclick="copyKey('${k.key}')">📋</button>
-          </div>
-        </div>
-      `).join('');
-    }
-  }
-}
-
-// Create new API key
-async function createNewKey(name) {
-  const data = await apiFetch('/api/keys', {
-    method: 'POST',
-    body: JSON.stringify({ name: name || 'New Key' })
-  });
-  if (data) {
-    loadApiKeys();
-    return data;
-  }
-  return null;
-}
-
-// Load providers
-async function loadProviders() {
-  const data = await apiFetch('/api/providers');
-  if (data && data.providers) {
-    window._providers = data.providers;
-    return data.providers;
-  }
-  return [];
-}
-
-// Create provider
-async function createProvider(provider) {
-  return await apiFetch('/api/providers', {
-    method: 'POST',
-    body: JSON.stringify(provider)
-  });
-}
-
-// Delete provider
-async function deleteProvider(id) {
-  return await apiFetch(`/api/providers/${id}`, { method: 'DELETE' });
-}
-
-// Load usage stats
-async function loadUsageStats() {
-  const data = await apiFetch('/api/usage');
-  if (data) {
-    return data;
-  }
-  return null;
-}
-
-// Copy key to clipboard
-function copyKey(key) {
-  navigator.clipboard.writeText(key).then(() => {
-    // Flash feedback
-    const el = event.target;
-    el.textContent = '✅';
-    setTimeout(() => el.textContent = '📋', 1000);
-  });
-}
-
-// Auto-refresh health every 30s
-setInterval(checkHealth, 30000);
-
-// Init on page load
-document.addEventListener('DOMContentLoaded', () => {
-  checkHealth();
-  loadApiKeys();
-});
-// ============ End API Integration ============
-
 // Navigation
 document.querySelectorAll('.nav-item[data-page]').forEach(item => {
   item.addEventListener('click', () => {
@@ -2265,14 +2147,14 @@ function createKey() {
   const nameInput = document.getElementById('new-key-name');
   const name = nameInput.value.trim();
   if (!name) return;
-  // Generate fake SAM Router key
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let rand = '';
-  for (let i = 0; i < 32; i++) rand += chars[Math.floor(Math.random() * chars.length)];
-  const newKey = { id: 'key-' + Date.now(), name, key: 'sam_sr_' + rand, created: '5/25/2026', active: true };
-  apiKeyStore.keys.push(newKey);
-  closeCreateKeyModal();
-  // Show created key modal
+  // Call real API
+  apiPost('/keys', { name }).then(newKey => {
+    newKey.created = new Date(newKey.createdAt).toLocaleDateString();
+    newKey.active = newKey.status === 'active';
+    if (!window.apiKeyStore) window.apiKeyStore = { keys: [] };
+    apiKeyStore.keys.push(newKey);
+    closeCreateKeyModal();
+    // Show created key modal
   showCreatedKeyModal(newKey);
   renderKeys();
 }
@@ -2763,6 +2645,85 @@ function closeModal(id) {
   const el = document.getElementById(id);
   if (el) el.remove();
 }
+
+// ========== API INTEGRATION ==========
+const API = '/api/dashboard';
+
+async function apiGet(path) {
+  const res = await fetch(API + path);
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
+
+async function apiPost(path, data) {
+  const res = await fetch(API + path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
+
+async function apiDelete(path) {
+  const res = await fetch(API + path, { method: 'DELETE' });
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
+
+async function apiPatch(path, data) {
+  const res = await fetch(API + path, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
+
+// Generate API Key
+async function generateApiKey() {
+  try {
+    const key = await apiPost('/keys', { name: 'Default API Key' });
+    const output = document.querySelector('#page-endpoint code');
+    if (output) {
+      output.textContent = key.key;
+      copyBtn.disabled = false;
+    }
+    // Update key count
+    refreshApiKeys();
+  } catch (e) {
+    alert('Failed to generate key: ' + e.message);
+  }
+}
+
+// Load API Keys
+async function refreshApiKeys() {
+  try {
+    const keys = await apiGet('/keys');
+    const active = keys.filter(k => k.status === 'active').length;
+    const activeEl = document.querySelector('#page-endpoint .stat-value');
+    if (activeEl) activeEl.textContent = active + ' active';
+  } catch {}
+}
+
+// Copy API Key
+const copyBtn = document.getElementById('copy-btn');
+if (copyBtn) {
+  copyBtn.addEventListener('click', () => {
+    const code = document.querySelector('#page-endpoint code');
+    if (code && code.textContent !== 'sam_sr_••••••••••••••••••••••••••••••••') {
+      navigator.clipboard.writeText(code.textContent);
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => copyBtn.textContent = 'Copy', 1500);
+    }
+  });
+}
+
+// Override generate button
+document.addEventListener('DOMContentLoaded', () => {
+  refreshApiKeys();
+});
 </script>
 </body>
 </html>
