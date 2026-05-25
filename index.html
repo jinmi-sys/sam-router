@@ -2397,10 +2397,17 @@ function toggleSidebar() {
     sidebar.classList.toggle('closed');
   }
 }
-// Close sidebar on nav item click (mobile)
-document.querySelectorAll('.nav-item').forEach(item => {
+// Close sidebar on nav item click (all screen sizes)
+document.querySelectorAll('.nav-item[data-page]').forEach(item => {
   item.addEventListener('click', () => {
-    if (window.innerWidth <= 768) closeSidebar();
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (window.innerWidth <= 768) {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+    } else {
+      sidebar.classList.add('closed');
+    }
   });
 });
 
