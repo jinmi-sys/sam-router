@@ -639,6 +639,19 @@ body::before {
   .sidebar-overlay.open { display: block; }
   .main-content { width: 100%; min-width: 0; }
 }
+
+/* === MITM PROXY === */
+.mitm-tool { padding: 0; overflow: hidden; }
+.mitm-tool-header { display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; }
+.mitm-tool-header:hover { background: var(--bg-hover); }
+.mitm-tool-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.mitm-chevron { color: var(--text-muted); font-size: 12px; transition: transform 0.2s; }
+.mitm-chevron.rotated { transform: rotate(180deg); }
+.mitm-tool-body { padding: 0 16px 16px; display: none; }
+.mitm-tool-body.open { display: block; }
+.flex { display: flex; } .items-center { align-items: center; } .gap-1 { gap: 4px; } .gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .mb-3 { margin-bottom: 12px; } .mb-4 { margin-bottom: 16px; } .mt-2 { margin-top: 8px; } .mt-4 { margin-top: 16px; } .flex-wrap { flex-wrap: wrap; }
+.justify-between { justify-content: space-between; }
+
 </style>
 </head>
 <body>
@@ -1398,38 +1411,150 @@ body::before {
         </div>
         <div class="warning mb-4">
           <span class="warning-icon">&#9888;</span>
-          <div>MITM intercepts HTTPS traffic. May violate provider ToS. Use at own risk.</div>
+          <div>MITM intercepts HTTPS traffic of IDE tools (Antigravity, Copilot, Kiro) via local CA to redirect requests to your providers. May violate ToS &rarr; account ban. Use at your own risk.</div>
         </div>
-        <div class="card">
-          <div class="card-title">MITM Server</div>
-          <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">Status: Stopped</div>
-          <div class="form-group">
-            <label class="form-label">SAM Router Base URL</label>
-            <input class="form-input" type="text" value="http://localhost:2500" readonly>
+
+        <!-- MITM Server Card -->
+        <div class="card mb-4">
+          <div class="flex justify-between items-center mb-3">
+            <div class="card-title" style="margin:0">MITM Server</div>
+            <span class="badge badge-error">Stopped</span>
           </div>
-          <div class="form-group">
-            <label class="form-label">API Key</label>
-            <input class="form-input" type="text" value="sam_sr_default" readonly>
-          </div>
-          <button class="btn btn-primary">&#9654; Start Server</button>
-        </div>
-        <div class="card mt-4">
-          <div class="card-title">Tool Interception</div>
-          <div class="flex gap-3 mt-2">
-            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
-              <div style="font-size:12px;font-weight:600">Antigravity</div>
-              <div style="font-size:11px;color:var(--text-muted)">Server off</div>
+          <div class="form-row" style="margin-bottom:12px">
+            <div class="form-group" style="flex:1">
+              <label class="form-label">SAM Router Base URL</label>
+              <input class="form-input" type="text" value="http://localhost:2500" readonly>
             </div>
-            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
-              <div style="font-size:12px;font-weight:600">GitHub Copilot</div>
-              <div style="font-size:11px;color:var(--text-muted)">Server off</div>
-            </div>
-            <div class="card" style="flex:1;text-align:center;background:var(--bg-surface)">
-              <div style="font-size:12px;font-weight:600">Kiro</div>
-              <div style="font-size:11px;color:var(--text-muted)">Server off</div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Certificate Status</label>
+              <input class="form-input" type="text" value="Not installed" readonly style="color:var(--error)">
             </div>
           </div>
+          <div class="form-row" style="margin-bottom:16px">
+            <div class="form-group" style="flex:1">
+              <label class="form-label">HTTP Proxy Port</label>
+              <input class="form-input" type="number" value="8888">
+            </div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label">HTTPS Intercept Port</label>
+              <input class="form-input" type="number" value="8443">
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-danger" onclick="toggleMitmServer()">&#9654; Start MITM Server</button>
+            <button class="btn btn-ghost">Install CA Certificate</button>
+          </div>
         </div>
+
+        <!-- Tool Cards -->
+        <h3 style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">Intercepted Tools</h3>
+
+        <!-- Antigravity -->
+        <div class="card mitm-tool mb-3" id="mitm-antigravity">
+          <div class="mitm-tool-header" onclick="toggleMitmTool('antigravity')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#4285F4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">Antigravity</div>
+                <div style="font-size:12px;color:var(--text-muted)">daily-cloudcode-pa.googleapis.com</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:var(--bg-hover);color:var(--text-muted)">DNS Off</span>
+              <span class="mitm-chevron" id="chevron-antigravity">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-antigravity">
+            <div class="mb-3">
+              <label class="form-label">Available Models</label>
+              <div class="flex gap-1 flex-wrap">
+                <span class="badge badge-info">gemini-3-flash-agent</span>
+                <span class="badge badge-info">gemini-3.5-flash-low</span>
+                <span class="badge badge-info">claude-sonnet-4-6</span>
+                <span class="badge badge-info">claude-opus-4-6-thinking</span>
+                <span class="badge badge-info">gpt-oss-120b-medium</span>
+                <span class="badge badge-info">gemini-3-flash</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">DNS Intercept</label>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GitHub Copilot -->
+        <div class="card mitm-tool mb-3" id="mitm-copilot">
+          <div class="mitm-tool-header" onclick="toggleMitmTool('copilot')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#1F6FEB">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">GitHub Copilot</div>
+                <div style="font-size:12px;color:var(--text-muted)">api.individual.githubcopilot.com</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:var(--bg-hover);color:var(--text-muted)">DNS Off</span>
+              <span class="mitm-chevron" id="chevron-copilot">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-copilot">
+            <div class="mb-3">
+              <label class="form-label">Available Models</label>
+              <div class="flex gap-1 flex-wrap">
+                <span class="badge badge-info">gpt-4o-mini</span>
+                <span class="badge badge-info">claude-haiku-4.5</span>
+                <span class="badge badge-info">gpt-4o</span>
+                <span class="badge badge-info">gpt-5-mini</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">DNS Intercept</label>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kiro -->
+        <div class="card mitm-tool mb-3" id="mitm-kiro">
+          <div class="mitm-tool-header" onclick="toggleMitmTool('kiro')">
+            <div class="flex items-center gap-3">
+              <div class="mitm-tool-icon" style="background:#FF6B00">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:14px">Kiro</div>
+                <div style="font-size:12px;color:var(--text-muted)">q.us-east-1.amazonaws.com</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="badge" style="background:var(--bg-hover);color:var(--text-muted)">DNS Off</span>
+              <span class="mitm-chevron" id="chevron-kiro">&#9662;</span>
+            </div>
+          </div>
+          <div class="mitm-tool-body" id="body-kiro">
+            <div class="mb-3">
+              <label class="form-label">Available Models</label>
+              <div class="flex gap-1 flex-wrap">
+                <span class="badge badge-info">claude-sonnet-4.5</span>
+                <span class="badge badge-info">claude-sonnet-4</span>
+                <span class="badge badge-info">claude-haiku-4.5</span>
+                <span class="badge badge-info">deepseek-3.2</span>
+                <span class="badge badge-info">minimax-m2.1</span>
+                <span class="badge badge-info">Qwen3 Coder Next</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">DNS Intercept</label>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- PAGE: CLI Tools -->
@@ -1895,6 +2020,19 @@ function navigateTo(page) {
   });
   // Redraw usage chart when navigating to usage
   if (page === 'usage') { requestAnimationFrame(() => requestAnimationFrame(() => drawUsageChart('tokens'))); }
+}
+
+// ========== MITM FUNCTIONS ==========
+function toggleMitmServer() {
+  alert('MITM Server — Coming soon in backend integration');
+}
+function toggleMitmTool(toolId) {
+  const body = document.getElementById('body-' + toolId);
+  const chevron = document.getElementById('chevron-' + toolId);
+  if (body && chevron) {
+    body.classList.toggle('open');
+    chevron.classList.toggle('rotated');
+  }
 }
 
 // ========== QUOTA TRACKER FUNCTIONS ==========
