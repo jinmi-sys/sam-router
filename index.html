@@ -1795,6 +1795,8 @@ function navigateTo(page) {
   document.querySelectorAll('.nav-item[data-page]').forEach(item => {
     if (item.dataset.page === page) item.classList.add('active');
   });
+  // Redraw usage chart when navigating to usage
+  if (page === 'usage') setTimeout(() => drawUsageChart('tokens'), 100);
 }
 
 // ========== USAGE FUNCTIONS ==========
