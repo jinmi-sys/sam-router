@@ -467,29 +467,63 @@ body::before {
   padding: 14px;
   cursor: pointer;
   transition: all 0.15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
 }
-.provider-card:hover {
-  border-color: var(--border-light);
-  background: var(--bg-hover);
+.provider-card:hover { border-color: var(--red); }
+.provider-card.deprecated { opacity: 0.7; }
+.provider-card.deprecated:hover { opacity: 0.9; }
+.provider-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
 }
-.provider-card .provider-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-.provider-card .provider-status {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-.provider-card .provider-status.connected {
-  color: var(--emerald);
-}
+.provider-info { flex: 1; min-width: 0; }
+.provider-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.provider-models { font-size: 11px; color: var(--text-muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.provider-status { flex-shrink: 0; }
+.badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+.badge-success { background: rgba(16,185,129,0.15); color: var(--emerald); }
+.badge-warn { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.badge-muted { background: rgba(107,114,128,0.1); color: var(--text-muted); }
+.badge-error { background: rgba(239,68,68,0.15); color: #ef4444; }
+.badge.sm { font-size: 10px; padding: 1px 6px; }
+.text-muted { color: var(--text-muted); }
 /* Section divider */
 .section-divider {
   height: 1px;
   background: var(--border);
   margin: 8px 0;
+}
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 480px; max-width: 90vw;
+  max-height: 80vh; overflow-y: auto;
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-header h3 { font-size: 15px; font-weight: 600; }
+.modal-body { padding: 20px; }
+.modal-footer {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
 }
 /* Empty state */
 .empty-state {
@@ -773,30 +807,178 @@ body::before {
           <p class="page-subtitle">Manage AI provider connections</p>
         </div>
         <div class="flex gap-2 mb-4">
-          <button class="btn btn-primary">&#43; Add Anthropic Compatible</button>
-          <button class="btn btn-emerald">&#43; Add OpenAI Compatible</button>
-          <button class="btn btn-ghost ml-auto">&#128260; Test All</button>
+          <button class="btn btn-primary" onclick="showAddProvider('anthropic')">&#43; Add Anthropic Compatible</button>
+          <button class="btn btn-emerald" onclick="showAddProvider('openai')">&#43; Add OpenAI Compatible</button>
+          <button class="btn btn-ghost ml-auto" onclick="testAllProviders()">&#128260; Test All</button>
         </div>
+
+        <!-- Custom Providers -->
         <div class="card">
           <div class="card-title">Custom Providers</div>
-          <div class="empty-state">
-            <div class="empty-icon">&#128279;</div>
-            <div class="empty-text">No custom providers configured</div>
-            <button class="btn btn-primary">&#43; Add Provider</button>
+          <div class="provider-grid" id="custom-providers">
+            <!-- OpenAI Compatible -->
+            <div class="provider-card" onclick="showProviderDetail('openai-1')">
+              <div class="provider-icon" style="background:#10a37f">OC</div>
+              <div class="provider-info">
+                <div class="provider-name">OpenAI Compatible</div>
+                <div class="provider-models">gpt-4o, gpt-4o-mini</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-success sm">&#9679; 2 Connected</span>
+              </div>
+            </div>
+            <!-- Anthropic Compatible -->
+            <div class="provider-card" onclick="showProviderDetail('anthropic-1')">
+              <div class="provider-icon" style="background:#d97757">AC</div>
+              <div class="provider-info">
+                <div class="provider-name">Anthropic Compatible</div>
+                <div class="provider-models">claude-sonnet-4-20250514</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-success sm">&#9679; 1 Connected</span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- OAuth Providers -->
         <div class="card">
           <div class="card-title">OAuth Providers</div>
-          <div class="empty-state">
-            <div class="empty-icon">&#128275;</div>
-            <div class="empty-text">No OAuth providers configured</div>
+          <div class="provider-grid">
+            <div class="provider-card deprecated" onclick="showProviderDetail('claude-oauth')">
+              <div class="provider-icon" style="background:#d97757">&#129302;</div>
+              <div class="provider-info">
+                <div class="provider-name">Claude Code</div>
+                <div class="provider-models text-muted">Deprecated</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-warn sm">&#9888; Risk</span>
+              </div>
+            </div>
+            <div class="provider-card deprecated" onclick="showProviderDetail('antigravity')">
+              <div class="provider-icon" style="background:#f59e0b">&#128640;</div>
+              <div class="provider-info">
+                <div class="provider-name">Antigravity</div>
+                <div class="provider-models text-muted">Deprecated</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-warn sm">&#9888; Risk</span>
+              </div>
+            </div>
+            <div class="provider-card deprecated" onclick="showProviderDetail('codex')">
+              <div class="provider-icon" style="background:#3b82f6">&#128187;</div>
+              <div class="provider-info">
+                <div class="provider-name">OpenAI Codex</div>
+                <div class="provider-models text-muted">Deprecated</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-warn sm">&#9888; Risk</span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Free Providers -->
+        <div class="card">
+          <div class="card-title">Free Providers</div>
+          <div class="provider-grid">
+            <div class="provider-card deprecated">
+              <div class="provider-icon" style="background:#ff6b35">&#129504;</div>
+              <div class="provider-info">
+                <div class="provider-name">Kiro AI</div>
+                <div class="provider-models text-muted">Deprecated</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-muted sm">&#9888; Risk</span>
+              </div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-icon" style="background:#e87040">OC</div>
+              <div class="provider-info">
+                <div class="provider-name">OpenCode Free</div>
+                <div class="provider-models">No auth needed</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-success sm">&#9679; Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Free Tier Providers -->
         <div class="card">
           <div class="card-title">Free Tier Providers</div>
-          <div class="empty-state">
-            <div class="empty-icon">&#127873;</div>
-            <div class="empty-text">No free providers configured</div>
+          <div class="provider-grid" id="free-tier-providers">
+            <div class="provider-card" onclick="showProviderDetail('openrouter')">
+              <div class="provider-icon" style="background:#f97316">OR</div>
+              <div class="provider-info">
+                <div class="provider-name">OpenRouter</div>
+                <div class="provider-models">27+ free models, 200 req/day</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-success sm">&#9679; 2 Connected</span>
+              </div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-icon" style="background:#76b900">NV</div>
+              <div class="provider-info">
+                <div class="provider-name">NVIDIA NIM</div>
+                <div class="provider-models">Free for dev program</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-muted sm">No connections</span>
+              </div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-icon" style="background:#ffffff;color:#333">OL</div>
+              <div class="provider-info">
+                <div class="provider-name">Ollama Cloud</div>
+                <div class="provider-models">Light usage free</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-success sm">&#9679; 1 Connected</span>
+              </div>
+            </div>
+            <div class="provider-card" onclick="showProviderDetail('gemini')">
+              <div class="provider-icon" style="background:#4285f4">&#128142;</div>
+              <div class="provider-info">
+                <div class="provider-name">Gemini</div>
+                <div class="provider-models">1M tokens/day free</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-success sm">&#9679; 3 Connected</span>
+              </div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-icon" style="background:#f38020">CF</div>
+              <div class="provider-info">
+                <div class="provider-name">Cloudflare</div>
+                <div class="provider-models">Workers AI free tier</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-muted sm">No connections</span>
+              </div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-icon" style="background:#2563eb">BP</div>
+              <div class="provider-info">
+                <div class="provider-name">BytePlus ModelArk</div>
+                <div class="provider-models">Free credits new account</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-muted sm">No connections</span>
+              </div>
+            </div>
+            <div class="provider-card">
+              <div class="provider-icon" style="background:#4285f4">VX</div>
+              <div class="provider-info">
+                <div class="provider-name">Vertex AI</div>
+                <div class="provider-models">$300 free credits</div>
+              </div>
+              <div class="provider-status">
+                <span class="badge badge-muted sm">No connections</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1381,6 +1563,143 @@ function navigateTo(page) {
   document.querySelectorAll('.nav-item[data-page]').forEach(item => {
     if (item.dataset.page === page) item.classList.add('active');
   });
+}
+
+// ========== PROVIDER FUNCTIONS ==========
+function showAddProvider(type) {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'provider-modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add ${type === 'anthropic' ? 'Anthropic' : 'OpenAI'} Compatible Provider</h3>
+        <button class="btn btn-ghost" onclick="closeModal('provider-modal')">&#10005;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="label">Provider Name</label>
+          <input class="form-input" type="text" placeholder="My ${type === 'anthropic' ? 'Anthropic' : 'OpenAI'} Provider" id="prov-name">
+        </div>
+        <div class="form-group">
+          <label class="label">Base URL</label>
+          <input class="form-input" type="text" placeholder="${type === 'anthropic' ? 'https://api.anthropic.com' : 'https://api.openai.com/v1'}" id="prov-url">
+        </div>
+        <div class="form-group">
+          <label class="label">API Key</label>
+          <input class="form-input" type="password" placeholder="sk-..." id="prov-key">
+        </div>
+        <div class="form-group">
+          <label class="label">Models (comma separated)</label>
+          <input class="form-input" type="text" placeholder="${type === 'anthropic' ? 'claude-sonnet-4-20250514' : 'gpt-4o, gpt-4o-mini'}" id="prov-models">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('provider-modal')">Cancel</button>
+        <button class="btn btn-${type === 'anthropic' ? 'primary' : 'emerald'}" onclick="saveProvider('${type}')">Save Provider</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function saveProvider(type) {
+  const name = document.getElementById('prov-name').value || (type === 'anthropic' ? 'Anthropic' : 'OpenAI') + ' Compatible';
+  const url = document.getElementById('prov-url').value;
+  const key = document.getElementById('prov-key').value;
+  const models = document.getElementById('prov-models').value;
+  if (!url || !key) { alert('URL and API Key required'); return; }
+  const colors = { anthropic: '#d97757', openai: '#10a37f' };
+  const abbr = { anthropic: 'AC', openai: 'OC' };
+  const card = document.createElement('div');
+  card.className = 'provider-card';
+  card.onclick = function() { showProviderDetail(name); };
+  card.innerHTML = `
+    <div class="provider-icon" style="background:${colors[type]}">${abbr[type]}</div>
+    <div class="provider-info">
+      <div class="provider-name">${name}</div>
+      <div class="provider-models">${models || 'No models configured'}</div>
+    </div>
+    <div class="provider-status">
+      <span class="badge badge-success sm">&#9679; 1 Connected</span>
+    </div>`;
+  document.getElementById('custom-providers').appendChild(card);
+  closeModal('provider-modal');
+}
+
+function showProviderDetail(id) {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'detail-modal';
+  const configs = {
+    'openai-1': { name: 'OpenAI Compatible', url: 'https://api.openai.com/v1', models: ['gpt-4o', 'gpt-4o-mini'], color: '#10a37f' },
+    'anthropic-1': { name: 'Anthropic Compatible', url: 'https://api.anthropic.com/v1', models: ['claude-sonnet-4-20250514'], color: '#d97757' },
+    'openrouter': { name: 'OpenRouter', url: 'https://openrouter.ai/api/v1', models: ['openai/gpt-4o', 'google/gemini-2.5-flash'], color: '#f97316' },
+    'gemini': { name: 'Gemini', url: 'https://generativelanguage.googleapis.com/v1beta', models: ['gemini-2.5-pro', 'gemini-2.5-flash'], color: '#4285f4' }
+  };
+  const c = configs[id] || { name: id, url: 'N/A', models: [], color: '#666' };
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>${c.name}</h3>
+        <button class="btn btn-ghost" onclick="closeModal('detail-modal')">&#10005;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="label">Base URL</label>
+          <input class="form-input" value="${c.url}" readonly>
+        </div>
+        <div class="form-group">
+          <label class="label">Connections</label>
+          ${c.models.map(m => `
+            <div class="flex items-center gap-2 mb-2" style="padding:8px;background:var(--bg);border-radius:6px;">
+              <span class="badge badge-success sm">&#9679;</span>
+              <span style="font-size:13px">${m}</span>
+              <button class="btn btn-ghost sm ml-auto" onclick="testConnection('${m}')">&#9654; Test</button>
+            </div>`).join('')}
+        </div>
+        <div class="form-group">
+          <label class="label">Add Connection</label>
+          <div class="flex gap-2">
+            <input class="form-input" type="text" placeholder="Model name" id="new-conn-model">
+            <button class="btn btn-primary" onclick="addConnection('${id}')">&#43; Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-red" onclick="deleteProvider('${id}')">Delete Provider</button>
+        <button class="btn btn-ghost" onclick="closeModal('detail-modal')">Close</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function addConnection(providerId) {
+  const model = document.getElementById('new-conn-model').value;
+  if (!model) return;
+  closeModal('detail-modal');
+  alert('Connection added: ' + model);
+}
+
+function deleteProvider(id) {
+  if (!confirm('Delete this provider?')) return;
+  closeModal('detail-modal');
+}
+
+function testConnection(model) {
+  event.stopPropagation();
+  alert('Testing ' + model + '...');
+}
+
+function testAllProviders() {
+  const cards = document.querySelectorAll('.provider-card');
+  cards.forEach(c => { c.style.borderColor = 'var(--emerald)'; });
+  setTimeout(() => { cards.forEach(c => { c.style.borderColor = ''; }); }, 2000);
+  alert('Testing all providers...');
+}
+
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
 }
 </script>
 </body>
