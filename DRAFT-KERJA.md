@@ -104,21 +104,16 @@ Grid Pattern : #0d1410 (subtle emerald grid)
 - [x] **Providers Page** — 4 categories (Custom/OAuth/Free/Free-Tier), provider cards, CRUD, modals, test connections
 - [x] **Combos Page** — 2 demo cards, create/edit modal with model reorder (up/down arrows), round-robin toggle, name validation
 - [x] **Usage Page** — Overview/Details tabs, stat cards, Tokens/Cost toggle, area chart, usage table per model, Details request logs, period selector, mobile sidebar auto-hide
-- [ ] **Quota Tracker Page** — Account list, quota bars, refresh/edit/delete, pagination
-- [ ] **MITM Page** — Status, start server, tool interception (Antigravity/Copilot/Kiro)
-- [ ] **CLI Tools Page** — CLI config
+- [x] **Quota Tracker Page** — Account list, quota bars, refresh/edit/delete, pagination
+- [x] **MITM Page** — Status, start server, tool interception (Antigravity/Copilot/Kiro)
+- [x] **CLI Tools Page** — 6 tool cards (Claude Code, Codex, Cursor, OpenCode, Cline, Hermes), Quick Config, expand/collapse
 
-### Phase 4: System Pages
-- [ ] **Media Providers** — Submenu expand/collapse
-  - [ ] Embedding — Provider cards (Gemini, OpenRouter, etc.)
-  - [ ] Text to Image — Provider cards (DALL-E, SD, etc.)
-  - [ ] Text To Speech — Provider cards
-  - [ ] Speech To Text — Provider cards (Groq, Deepgram, etc.)
-  - [ ] Web Fetch & Search — Search + Fetch provider cards
-- [ ] **Proxy Pools** — Stats, add pool, empty state
-- [ ] **Skills** — Skill management
-- [ ] **Console Log** — Live log, clear button, log categories (PENDING, USAGE, STREAM, AUTH, ROUTING, FORMAT)
-- [ ] **Settings** — App configuration
+### Phase 4: System Pages (DONE)
+- [x] **Media Providers** — Submenu expand/collapse with sub-pages (Embedding, TTS, STT, Web Fetch)
+- [x] **Proxy Pools** — Stats grid, 3 pool cards, status badges
+- [x] **Skills** — Placeholder (empty state)
+- [x] **Console Log** — Placeholder with clear button
+- [x] **Settings** — General (password, port, debug toggle) + Security (API key prefix)
 
 ### Phase 5: Backend/API (FUTURE)
 - [ ] API key generator (sam_sr_ prefix)
@@ -129,11 +124,11 @@ Grid Pattern : #0d1410 (subtle emerald grid)
 - [ ] 3-tier fallback routing
 - [ ] Quota tracking logic
 
-### Phase 6: Deploy (FUTURE)
-- [ ] Push ke GitHub repo `sam-router`
-- [ ] Deploy frontend demo
-- [ ] 5 screenshots (3 live + 2 GitHub)
-- [ ] Kirim ke chat Master
+### Phase 6: Deploy (DONE)
+- [x] Push ke GitHub repo `sam-router`
+- [x] Deploy frontend demo via GitHub Pages
+- [x] 5 screenshots (3 live + 2 GitHub)
+- [x] Kirim ke chat Master
 
 ---
 
