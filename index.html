@@ -1535,13 +1535,7 @@ document.querySelectorAll('.nav-item[data-page]').forEach(item => {
       return;
     }
     // Activate page
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    const target = document.getElementById('page-' + page);
-    if (target) {
-      target.classList.add('active');
-      item.classList.add('active');
-    }
+    navigateTo(page);
   });
 });
 
