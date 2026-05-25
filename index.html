@@ -56,7 +56,6 @@
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-size: 16px;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -111,16 +110,16 @@ body::before {
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 18px;
+  font-size: 14px;
   color: white;
 }
 .sidebar-title {
-  font-size: 22px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
 }
 .sidebar-version {
-  font-size: 18px;
+  font-size: 11px;
   color: var(--text-muted);
   background: var(--bg-card);
   padding: 2px 6px;
@@ -132,7 +131,7 @@ body::before {
 }
 .nav-section-title {
   padding: 0 16px 8px;
-  font-size: 20px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.2px;
@@ -145,7 +144,7 @@ body::before {
   padding: 8px 16px;
   cursor: pointer;
   color: var(--text-secondary);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 500;
   transition: all 0.15s;
   border-left: 3px solid transparent;
@@ -163,12 +162,12 @@ body::before {
 .nav-item .nav-icon {
   width: 18px;
   text-align: center;
-  font-size: 18px;
+  font-size: 14px;
   flex-shrink: 0;
 }
 .nav-item .nav-badge {
   margin-left: auto;
-  font-size: 20px;
+  font-size: 10px;
   background: var(--red-primary);
   color: white;
   padding: 1px 6px;
@@ -183,7 +182,7 @@ body::before {
 .nav-submenu.open { display: block; }
 .nav-submenu .nav-item {
   padding: 6px 16px;
-  font-size: 20px;
+  font-size: 12px;
 }
 .nav-submenu .nav-item.active {
   color: var(--red-primary);
@@ -191,7 +190,7 @@ body::before {
 }
 .nav-toggle {
   margin-left: auto;
-  font-size: 20px;
+  font-size: 10px;
   transition: transform 0.2s;
 }
 .nav-toggle.open { transform: rotate(90deg); }
@@ -211,7 +210,7 @@ body::before {
   border-radius: 6px;
   color: var(--text-secondary);
   cursor: pointer;
-  font-size: 20px;
+  font-size: 12px;
   transition: all 0.15s;
 }
 .shutdown-btn:hover {
@@ -221,7 +220,7 @@ body::before {
 }
 .sidebar-ip {
   text-align: center;
-  font-size: 20px;
+  font-size: 10px;
   color: var(--text-muted);
   margin-top: 8px;
   font-family: 'SF Mono', 'Fira Code', monospace;
@@ -256,7 +255,7 @@ body::before {
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -273,7 +272,7 @@ body::before {
   color: var(--emerald);
 }
 .topbar-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   margin-left: 12px;
@@ -299,13 +298,13 @@ body::before {
   margin-bottom: 24px;
 }
 .page-title {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
 .page-subtitle {
-  font-size: 18px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 /* Cards */
@@ -317,7 +316,7 @@ body::before {
   margin-bottom: 16px;
 }
 .card-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 12px;
@@ -335,7 +334,7 @@ body::before {
   gap: 6px;
   padding: 6px 14px;
   border-radius: 6px;
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   border: 1px solid transparent;
@@ -372,7 +371,7 @@ body::before {
   gap: 8px;
 }
 .toggle-label {
-  font-size: 20px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 .toggle {
@@ -405,7 +404,7 @@ body::before {
 }
 .form-label {
   display: block;
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 6px;
@@ -419,7 +418,7 @@ body::before {
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-primary);
-  font-size: 18px;
+  font-size: 14px;
   font-family: 'SF Mono', 'Fira Code', monospace;
 }
 .form-input:focus {
@@ -432,7 +431,7 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 18px;
+  font-size: 11px;
   font-weight: 600;
   padding: 3px 8px;
   border-radius: 4px;
@@ -453,14 +452,14 @@ body::before {
   border: 1px solid rgba(245,158,11,0.3);
   border-radius: 8px;
   padding: 12px 16px;
-  font-size: 20px;
+  font-size: 12px;
   color: var(--amber);
   display: flex;
   align-items: flex-start;
   gap: 10px;
   margin-top: 12px;
 }
-.warning-icon { font-size: 20px; flex-shrink: 0; }
+.warning-icon { font-size: 16px; flex-shrink: 0; }
 /* API Key row */
 .key-row {
   display: flex;
@@ -471,13 +470,13 @@ body::before {
 }
 .key-row:last-child { border-bottom: none; }
 .key-name {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   min-width: 100px;
 }
 .key-value {
-  font-size: 20px;
+  font-size: 12px;
   color: var(--text-secondary);
   font-family: 'SF Mono', 'Fira Code', monospace;
   flex: 1;
@@ -485,7 +484,7 @@ body::before {
   text-overflow: ellipsis;
 }
 .key-date {
-  font-size: 18px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 /* Flex helpers */
@@ -526,20 +525,20 @@ body::before {
   width: 40px; height: 40px;
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 700;
+  font-size: 14px; font-weight: 700;
   color: #fff;
   flex-shrink: 0;
 }
 .provider-info { flex: 1; min-width: 0; }
-.provider-name { font-size: 18px; font-weight: 600; color: var(--text); }
-.provider-models { font-size: 18px; color: var(--text-muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.provider-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.provider-models { font-size: 11px; color: var(--text-muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .provider-status { flex-shrink: 0; }
-.badge { font-size: 18px; padding: 2px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+.badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
 .badge-success { background: rgba(16,185,129,0.15); color: var(--emerald); }
 .badge-warn { background: rgba(245,158,11,0.15); color: #f59e0b; }
 .badge-muted { background: rgba(107,114,128,0.1); color: var(--text-muted); }
 .badge-error { background: rgba(239,68,68,0.15); color: #ef4444; }
-.badge.sm { font-size: 20px; padding: 1px 6px; }
+.badge.sm { font-size: 10px; padding: 1px 6px; }
 .text-muted { color: var(--text-muted); }
 /* Combo Card */
 .combo-card { margin-bottom: 8px; }
@@ -547,13 +546,13 @@ body::before {
 .combo-icon {
   width: 36px; height: 36px; border-radius: 8px;
   background: var(--red); display: flex; align-items: center; justify-content: center;
-  font-size: 20px; font-weight: 700; color: #fff; flex-shrink: 0;
+  font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
 }
 .combo-info { flex: 1; min-width: 0; }
-.combo-name { font-size: 18px; font-weight: 600; color: var(--text); display: block; margin-bottom: 4px; }
+.combo-name { font-size: 14px; font-weight: 600; color: var(--text); display: block; margin-bottom: 4px; }
 .combo-models { display: flex; flex-wrap: wrap; gap: 4px; }
 .model-tag {
-  font-size: 18px; font-family: monospace;
+  font-size: 11px; font-family: monospace;
   background: rgba(255,255,255,0.05); color: var(--text-muted);
   padding: 2px 8px; border-radius: 4px;
   max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -567,17 +566,17 @@ body::before {
 /* === USAGE PAGE === */
 .usage-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 .tab-group { display: flex; gap: 2px; background: var(--bg-surface); border-radius: 6px; padding: 2px; border: 1px solid var(--border); }
-.tab-btn { padding: 5px 12px; border: none; background: none; color: var(--text-muted); font-size: 20px; border-radius: 4px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.tab-btn { padding: 5px 12px; border: none; background: none; color: var(--text-muted); font-size: 12px; border-radius: 4px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 .tab-btn:hover { color: var(--text); }
 .tab-btn.active { background: var(--red-primary); color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 12px; }
 .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
-.stat-label { font-size: 18px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
+.stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
 .stat-value { font-size: 22px; font-weight: 700; }
 .chart-placeholder { height: 220px; position: relative; }
 .chart-placeholder canvas { width: 100% !important; height: 100% !important; }
-.data-table { width: 100%; border-collapse: collapse; font-size: 20px; }
-.data-table th { text-align: left; padding: 8px 10px; color: var(--text-muted); font-size: 18px; text-transform: uppercase; font-weight: 600; border-bottom: 1px solid var(--border); }
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th { text-align: left; padding: 8px 10px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; font-weight: 600; border-bottom: 1px solid var(--border); }
 .data-table td { padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,0.03); }
 .data-table tfoot td { font-weight: 600; }
 .text-right { text-align: right; }
@@ -587,20 +586,20 @@ body::before {
   display: flex; align-items: center; gap: 6px;
   padding: 4px 8px; border-radius: 4px;
   background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-  font-size: 20px;
+  font-size: 12px;
 }
-.model-idx { width: 20px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 18px; }
-.model-val { flex: 1; font-family: monospace; color: var(--text); font-size: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-idx { width: 20px; text-align: center; color: var(--text-muted); font-weight: 600; font-size: 11px; }
+.model-val { flex: 1; font-family: monospace; color: var(--text); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .model-arrows { display: flex; gap: 2px; }
 .model-arrows button {
   background: none; border: none; color: var(--text-muted); cursor: pointer;
-  padding: 2px 4px; border-radius: 3px; font-size: 18px;
+  padding: 2px 4px; border-radius: 3px; font-size: 11px;
 }
 .model-arrows button:hover { color: var(--text); background: rgba(255,255,255,0.05); }
 .model-arrows button:disabled { opacity: 0.3; cursor: not-allowed; }
 .model-remove {
   background: none; border: none; color: var(--text-muted); cursor: pointer;
-  padding: 2px 6px; border-radius: 3px; font-size: 20px;
+  padding: 2px 6px; border-radius: 3px; font-size: 12px;
 }
 .model-remove:hover { color: var(--red); background: rgba(220,38,38,0.1); }
 /* Section divider */
@@ -647,7 +646,7 @@ body::before {
   opacity: 0.3;
 }
 .empty-state .empty-text {
-  font-size: 18px;
+  font-size: 14px;
   margin-bottom: 16px;
 }
 /* === MOBILE SIDEBAR AUTO-HIDE === */
@@ -660,17 +659,17 @@ body::before {
 /* === QUOTA TRACKER === */
 .quota-card { border: 1px solid var(--border); }
 .quota-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-.quota-name { font-weight: 600; font-size: 18px; color: var(--text-primary); margin-bottom: 4px; }
-.quota-meta { font-size: 20px; color: var(--text-secondary); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.quota-name { font-weight: 600; font-size: 14px; color: var(--text-primary); margin-bottom: 4px; }
+.quota-meta { font-size: 12px; color: var(--text-secondary); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .quota-bar-wrap { margin-bottom: 10px; }
 .quota-bar { height: 8px; background: var(--bg-hover); border-radius: 4px; overflow: hidden; margin-bottom: 4px; }
 .quota-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
 .quota-fill.success { background: var(--success); }
 .quota-fill.warning { background: var(--warning); }
 .quota-fill.danger { background: var(--error); }
-.quota-label { display: flex; justify-content: space-between; font-size: 18px; color: var(--text-muted); }
+.quota-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
 .quota-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
-.quota-expiry { font-size: 20px; color: var(--text-secondary); }
+.quota-expiry { font-size: 12px; color: var(--text-secondary); }
 @media (max-width: 768px) {
   .hamburger { display: flex !important; }
   .sidebar {
@@ -693,7 +692,7 @@ body::before {
 .mitm-tool-header { display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; }
 .mitm-tool-header:hover { background: var(--bg-hover); }
 .mitm-tool-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.mitm-chevron { color: var(--text-muted); font-size: 20px; transition: transform 0.2s; }
+.mitm-chevron { color: var(--text-muted); font-size: 12px; transition: transform 0.2s; }
 .mitm-chevron.rotated { transform: rotate(180deg); }
 .mitm-tool-body { padding: 0 16px 16px; display: none; }
 .mitm-tool-body.open { display: block; }
@@ -905,8 +904,8 @@ body::before {
           <!-- RTK -->
           <div class="flex items-center justify-between">
             <div>
-              <div style="font-size: 20px;color:var(--text-primary)">Compress tool output (RTK)</div>
-              <div style="font-size: 18px;color:var(--text-muted)">Save 20-40% input tokens per request</div>
+              <div style="font-size:13px;color:var(--text-primary)">Compress tool output (RTK)</div>
+              <div style="font-size:11px;color:var(--text-muted)">Save 20-40% input tokens per request</div>
             </div>
             <div class="toggle on" id="rtk-toggle" onclick="this.classList.toggle('on')"></div>
           </div>
@@ -914,13 +913,13 @@ body::before {
           <!-- Caveman Mode -->
           <div class="flex items-center justify-between mt-2">
             <div>
-              <div style="font-size: 20px;color:var(--text-primary)">Compress LLM output (Caveman)</div>
-              <div style="font-size: 18px;color:var(--text-muted)">Terse replies, save up to 65% output tokens</div>
+              <div style="font-size:13px;color:var(--text-primary)">Compress LLM output (Caveman)</div>
+              <div style="font-size:11px;color:var(--text-muted)">Terse replies, save up to 65% output tokens</div>
             </div>
             <div class="flex gap-2 items-center">
-              <button class="btn btn-ghost caveman-btn" style="padding:4px 10px;font-size: 18px" data-level="lite" onclick="setCaveman('lite')">Lite</button>
-              <button class="btn btn-emerald caveman-btn active" style="padding:4px 10px;font-size: 18px" data-level="full" onclick="setCaveman('full')">Full</button>
-              <button class="btn btn-ghost caveman-btn" style="padding:4px 10px;font-size: 18px" data-level="ultra" onclick="setCaveman('ultra')">Ultra</button>
+              <button class="btn btn-ghost caveman-btn" style="padding:4px 10px;font-size:11px" data-level="lite" onclick="setCaveman('lite')">Lite</button>
+              <button class="btn btn-emerald caveman-btn active" style="padding:4px 10px;font-size:11px" data-level="full" onclick="setCaveman('full')">Full</button>
+              <button class="btn btn-ghost caveman-btn" style="padding:4px 10px;font-size:11px" data-level="ultra" onclick="setCaveman('ultra')">Ultra</button>
               <div class="toggle" id="caveman-toggle" onclick="toggleCaveman()"></div>
             </div>
           </div>
@@ -937,8 +936,8 @@ body::before {
           <!-- Require API Key toggle -->
           <div class="flex items-center justify-between pb-4 mb-4" style="border-bottom:1px solid var(--border)">
             <div>
-              <div style="font-size: 20px;color:var(--text-primary);font-weight:600">Require API key</div>
-              <div style="font-size: 18px;color:var(--text-muted)">Requests without a valid key will be rejected</div>
+              <div style="font-size:13px;color:var(--text-primary);font-weight:600">Require API key</div>
+              <div style="font-size:11px;color:var(--text-muted)">Requests without a valid key will be rejected</div>
             </div>
             <div class="toggle on" id="require-key-toggle" onclick="this.classList.toggle('on')"></div>
           </div>
@@ -949,15 +948,15 @@ body::before {
               <div>
                 <div class="key-name">Default</div>
                 <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
-                  <code style="font-size: 18px;color:var(--text-muted);font-family:'SF Mono',monospace" id="key-default-display">sam_sr_k...7l0</code>
-                  <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size: 20px;padding:2px" onclick="toggleKeyVis('key-default')" title="Show/Hide">&#128065;</button>
-                  <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size: 20px;padding:2px" onclick="copyKey('sam_sr_k7x9m2p4q8v1n5j3h6f0d2s4a7g9l0')" title="Copy">&#128203;</button>
+                  <code style="font-size:11px;color:var(--text-muted);font-family:'SF Mono',monospace" id="key-default-display">sam_sr_k...7l0</code>
+                  <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px" onclick="toggleKeyVis('key-default')" title="Show/Hide">&#128065;</button>
+                  <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px" onclick="copyKey('sam_sr_k7x9m2p4q8v1n5j3h6f0d2s4a7g9l0')" title="Copy">&#128203;</button>
                 </div>
-                <div style="font-size: 20px;color:var(--text-muted);margin-top:4px">Created 5/25/2026</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:4px">Created 5/25/2026</div>
               </div>
               <div class="flex items-center gap-2">
                 <div class="toggle on" onclick="this.classList.toggle('on')" title="Active/Pause"></div>
-                <button style="background:none;border:none;color:var(--red-primary);cursor:pointer;font-size: 18px;padding:4px" onclick="deleteKey('Default')" title="Delete">&#128465;</button>
+                <button style="background:none;border:none;color:var(--red-primary);cursor:pointer;font-size:14px;padding:4px" onclick="deleteKey('Default')" title="Delete">&#128465;</button>
               </div>
             </div>
             <!-- Additional keys populated by JS -->
@@ -1309,7 +1308,7 @@ body::before {
           <div class="card">
             <div class="card-header">
               <div class="card-title">Request Logs</div>
-              <input type="text" class="form-input" placeholder="Filter by model, status..." style="width:200px;font-size: 20px" oninput="filterUsageLogs(this.value)">
+              <input type="text" class="form-input" placeholder="Filter by model, status..." style="width:200px;font-size:12px" oninput="filterUsageLogs(this.value)">
             </div>
             <table class="data-table">
               <thead>
@@ -1347,7 +1346,7 @@ body::before {
           <button class="btn btn-sm btn-danger active" onclick="filterAccounts('all')" id="filter-all">All Accounts (4)</button>
           <button class="btn btn-sm btn-ghost" onclick="filterAccounts('expiring')" id="filter-expiring">Expiring First</button>
           <button class="btn btn-sm btn-ghost" onclick="filterAccounts('empty')" id="filter-empty">Turn Off Empty</button>
-          <span class="ml-auto" style="font-size: 20px;color:var(--text-muted);display:flex;align-items:center;gap:4px">
+          <span class="ml-auto" style="font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:4px">
             <span style="width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block"></span>
             Auto-refresh in <span id="quota-refresh-timer">33</span>s
           </span>
@@ -1498,7 +1497,7 @@ body::before {
         </div>
 
         <!-- Tool Cards -->
-        <h3 style="font-size: 18px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">Intercepted Tools</h3>
+        <h3 style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">Intercepted Tools</h3>
 
         <!-- Antigravity -->
         <div class="card mitm-tool mb-3" id="mitm-antigravity">
@@ -1508,8 +1507,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">Antigravity</div>
-                <div style="font-size: 20px;color:var(--text-muted)">daily-cloudcode-pa.googleapis.com</div>
+                <div style="font-weight:600;font-size:14px">Antigravity</div>
+                <div style="font-size:12px;color:var(--text-muted)">daily-cloudcode-pa.googleapis.com</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1544,8 +1543,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">GitHub Copilot</div>
-                <div style="font-size: 20px;color:var(--text-muted)">api.individual.githubcopilot.com</div>
+                <div style="font-weight:600;font-size:14px">GitHub Copilot</div>
+                <div style="font-size:12px;color:var(--text-muted)">api.individual.githubcopilot.com</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1578,8 +1577,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">Kiro</div>
-                <div style="font-size: 20px;color:var(--text-muted)">q.us-east-1.amazonaws.com</div>
+                <div style="font-weight:600;font-size:14px">Kiro</div>
+                <div style="font-size:12px;color:var(--text-muted)">q.us-east-1.amazonaws.com</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1618,7 +1617,7 @@ body::before {
         <!-- Quick Config -->
         <div class="card mb-4">
           <div class="card-title">&#128187; Quick Config</div>
-          <div style="font-size: 20px;color:var(--text-secondary);margin-bottom:12px">Copy these values to configure any CLI tool.</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Copy these values to configure any CLI tool.</div>
           <div class="form-row" style="margin-bottom:12px">
             <div class="form-group" style="flex:1">
               <label class="form-label">Base URL</label>
@@ -1638,7 +1637,7 @@ body::before {
         </div>
 
         <!-- Tool Cards -->
-        <h3 style="font-size: 18px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">Supported Tools</h3>
+        <h3 style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">Supported Tools</h3>
 
         <!-- Claude Code -->
         <div class="card cli-tool mb-3">
@@ -1648,8 +1647,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">Claude Code</div>
-                <div style="font-size: 20px;color:var(--text-muted)">Anthropic CLI — ~/.claude/settings.json</div>
+                <div style="font-weight:600;font-size:14px">Claude Code</div>
+                <div style="font-size:12px;color:var(--text-muted)">Anthropic CLI — ~/.claude/settings.json</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1660,7 +1659,7 @@ body::before {
           <div class="mitm-tool-body" id="body-claude">
             <div class="mb-3">
               <label class="form-label">Environment Variables</label>
-              <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size: 20px;line-height:1.8">
+              <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
                 <div>ANTHROPIC_BASE_URL=http://127.0.0.1:2500/v1</div>
                 <div>ANTHROPIC_API_KEY=sam_sr_...</div>
                 <div>ANTHROPIC_DEFAULT_OPUS_MODEL=cc/claude-opus-4-6</div>
@@ -1687,8 +1686,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">OpenAI Codex CLI / App</div>
-                <div style="font-size: 20px;color:var(--text-muted)">OpenAI Codex CLI & iOS App</div>
+                <div style="font-weight:600;font-size:14px">OpenAI Codex CLI / App</div>
+                <div style="font-size:12px;color:var(--text-muted)">OpenAI Codex CLI & iOS App</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1697,7 +1696,7 @@ body::before {
             </div>
           </div>
           <div class="mitm-tool-body" id="body-codex">
-            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size: 20px;line-height:1.8">
+            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
               <div>OPENAI_API_KEY=sam_sr_...</div>
               <div>OPENAI_BASE_URL=http://127.0.0.1:2500/v1</div>
             </div>
@@ -1712,8 +1711,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">Cursor</div>
-                <div style="font-size: 20px;color:var(--text-muted)">Cursor AI Code Editor — Settings → Models</div>
+                <div style="font-weight:600;font-size:14px">Cursor</div>
+                <div style="font-size:12px;color:var(--text-muted)">Cursor AI Code Editor — Settings → Models</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1722,8 +1721,8 @@ body::before {
             </div>
           </div>
           <div class="mitm-tool-body" id="body-cursor">
-            <div class="warning mb-3" style="font-size: 20px"><span class="warning-icon">&#9888;</span> Cursor Pro required. Routes through own server — enable Tunnel or Cloud Endpoint in Settings.</div>
-            <div style="font-size: 20px;line-height:1.8">
+            <div class="warning mb-3" style="font-size:12px"><span class="warning-icon">&#9888;</span> Cursor Pro required. Routes through own server — enable Tunnel or Cloud Endpoint in Settings.</div>
+            <div style="font-size:13px;line-height:1.8">
               <div>1. Open Settings → Models</div>
               <div>2. Enable "OpenAI API key" option</div>
               <div>3. Base URL: <code style="background:var(--bg-hover);padding:2px 6px;border-radius:3px">http://127.0.0.1:2500/v1</code></div>
@@ -1742,8 +1741,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">OpenCode</div>
-                <div style="font-size: 20px;color:var(--text-muted)">OpenCode AI Terminal Assistant</div>
+                <div style="font-weight:600;font-size:14px">OpenCode</div>
+                <div style="font-size:12px;color:var(--text-muted)">OpenCode AI Terminal Assistant</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1752,7 +1751,7 @@ body::before {
             </div>
           </div>
           <div class="mitm-tool-body" id="body-opencode">
-            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size: 20px;line-height:1.8">
+            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
               <div>OPENAI_API_KEY=sam_sr_...</div>
               <div>OPENAI_BASE_URL=http://127.0.0.1:2500/v1</div>
             </div>
@@ -1767,8 +1766,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">Cline</div>
-                <div style="font-size: 20px;color:var(--text-muted)">Cline AI Coding Assistant</div>
+                <div style="font-weight:600;font-size:14px">Cline</div>
+                <div style="font-size:12px;color:var(--text-muted)">Cline AI Coding Assistant</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1777,7 +1776,7 @@ body::before {
             </div>
           </div>
           <div class="mitm-tool-body" id="body-cline">
-            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size: 20px;line-height:1.8">
+            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
               <div>OPENAI_API_KEY=sam_sr_...</div>
               <div>OPENAI_BASE_URL=http://127.0.0.1:2500/v1</div>
             </div>
@@ -1792,8 +1791,8 @@ body::before {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2a7 7 0 017 7v4a7 7 0 01-14 0V9a7 7 0 017-7z"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
               </div>
               <div>
-                <div style="font-weight:600;font-size: 18px">Hermes Agent</div>
-                <div style="font-size: 20px;color:var(--text-muted)">Nous Research self-improving AI agent</div>
+                <div style="font-weight:600;font-size:14px">Hermes Agent</div>
+                <div style="font-size:12px;color:var(--text-muted)">Nous Research self-improving AI agent</div>
               </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1802,7 +1801,7 @@ body::before {
             </div>
           </div>
           <div class="mitm-tool-body" id="body-hermes">
-            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size: 20px;line-height:1.8">
+            <div style="background:var(--bg-hover);padding:12px;border-radius:6px;font-family:monospace;font-size:12px;line-height:1.8">
               <div>OPENAI_API_KEY=sam_sr_...</div>
               <div>OPENAI_BASE_URL=http://127.0.0.1:2500/v1</div>
             </div>
@@ -1921,17 +1920,17 @@ body::before {
         <div class="card mb-3">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
             <div>
-              <div style="font-weight:600;font-size: 18px">Thread 1 <span class="badge badge-success" style="font-size: 20px;margin-left:6px">Online</span></div>
-              <div style="font-size: 20px;color:var(--text-muted)">http://...com:7103/user/thread_1</div>
+              <div style="font-weight:600;font-size:14px">Thread 1 <span class="badge badge-success" style="font-size:10px;margin-left:6px">Online</span></div>
+              <div style="font-size:12px;color:var(--text-muted)">http://...com:7103/user/thread_1</div>
             </div>
-            <div style="font-size: 20px">
-              <span style="color:var(--text-muted)">IP:</span> <code style="background:var(--bg-hover);padding:2px 6px;border-radius:3px;font-size: 18px">114.4.22.209</code>
+            <div style="font-size:12px">
+              <span style="color:var(--text-muted)">IP:</span> <code style="background:var(--bg-hover);padding:2px 6px;border-radius:3px;font-size:11px">114.4.22.209</code>
               <span style="color:var(--text-muted);margin-left:8px">Usage:</span> 5 times
             </div>
           </div>
-          <div style="font-size: 18px;color:var(--text-muted);display:flex;justify-content:space-between">
+          <div style="font-size:11px;color:var(--text-muted);display:flex;justify-content:space-between">
             <div class="flex gap-3">
-              <span>Original domain <code style="background:var(--bg-hover);padding:1px 4px;border-radius:2px;font-size: 20px">gen-ai-solutions-ddl.llse.net</code></span>
+              <span>Original domain <code style="background:var(--bg-hover);padding:1px 4px;border-radius:2px;font-size:10px">gen-ai-solutions-ddl.llse.net</code></span>
               <span><span class="dot dot-info"></span>100 connections</span>
             </div>
             <div class="flex gap-2">
@@ -1945,14 +1944,14 @@ body::before {
         <div class="card mb-3">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
             <div>
-              <div style="font-weight:600;font-size: 18px">Perplexity <span class="badge" style="font-size: 20px;margin-left:6px;background:var(--amber);color:#000">Shared</span></div>
-              <div style="font-size: 20px;color:var(--text-muted)">perplexity.ai proxy</div>
+              <div style="font-weight:600;font-size:14px">Perplexity <span class="badge" style="font-size:10px;margin-left:6px;background:var(--amber);color:#000">Shared</span></div>
+              <div style="font-size:12px;color:var(--text-muted)">perplexity.ai proxy</div>
             </div>
-            <div style="font-size: 20px">
+            <div style="font-size:12px">
               <span style="color:var(--text-muted)">Usage:</span> 1 time
             </div>
           </div>
-          <div style="font-size: 18px;color:var(--text-muted);display:flex;justify-content:space-between">
+          <div style="font-size:11px;color:var(--text-muted);display:flex;justify-content:space-between">
             <span>Shared pool — used by Providers</span>
             <span><span class="dot dot-info"></span>Used by 3 keys</span>
           </div>
@@ -1961,11 +1960,11 @@ body::before {
         <div class="card mb-3">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
             <div>
-              <div style="font-weight:600;font-size: 18px">New POOL <span class="badge badge-error" style="font-size: 20px;margin-left:6px">Offline</span></div>
-              <div style="font-size: 20px;color:var(--text-muted)">test pool — not active</div>
+              <div style="font-weight:600;font-size:14px">New POOL <span class="badge badge-error" style="font-size:10px;margin-left:6px">Offline</span></div>
+              <div style="font-size:12px;color:var(--text-muted)">test pool — not active</div>
             </div>
           </div>
-          <div style="font-size: 18px;color:var(--text-muted)">No connections. Configure endpoints to activate.</div>
+          <div style="font-size:11px;color:var(--text-muted)">No connections. Configure endpoints to activate.</div>
         </div>
 
         <div class="flex gap-2 mt-4" style="justify-content:flex-end">
@@ -1998,7 +1997,7 @@ body::before {
         <div class="flex gap-2 mb-4">
           <button class="btn btn-ghost" onclick="clearConsole()">&#128465; Clear</button>
         </div>
-        <div class="card" id="console-output" style="font-family:'SF Mono','Fira Code',monospace;font-size: 18px;max-height:500px;overflow-y:auto;line-height:1.8">
+        <div class="card" id="console-output" style="font-family:'SF Mono','Fira Code',monospace;font-size:11px;max-height:500px;overflow-y:auto;line-height:1.8">
           <div style="color:var(--text-muted)">[19:51:09] <span style="color:var(--emerald)">[PENDING]</span> provider=openai-compatible-chat | model=mimo-v2-pro</div>
           <div style="color:var(--text-muted)">[19:51:09] <span style="color:var(--amber)">[AUTH]</span> API Key: sam_sr_k...7e08</div>
           <div style="color:var(--text-muted)">[19:51:09] <span style="color:#a78bfa">[ROUTING]</span> xmtp/mimo-v2-pro -> openai-compatible-chat</div>
@@ -2297,8 +2296,8 @@ function showCreateKeyModal() {
   div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:999';
   div.innerHTML = `
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;width:400px;max-width:90vw">
-      <h3 style="font-size: 20px;font-weight:600;margin-bottom:16px">Create API Key</h3>
-      <input type="text" id="new-key-name" placeholder="Key Name (e.g. Production Key)" style="width:100%;padding:10px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size: 20px;margin-bottom:16px;outline:none">
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:16px">Create API Key</h3>
+      <input type="text" id="new-key-name" placeholder="Key Name (e.g. Production Key)" style="width:100%;padding:10px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size:13px;margin-bottom:16px;outline:none">
       <div style="display:flex;gap:8px">
         <button class="btn btn-primary" style="flex:1" onclick="createKey()">Create</button>
         <button class="btn btn-ghost" style="flex:1" onclick="closeCreateKeyModal()">Cancel</button>
@@ -2334,13 +2333,13 @@ function showCreatedKeyModal(key) {
   div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:999';
   div.innerHTML = `
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;width:420px;max-width:90vw">
-      <h3 style="font-size: 20px;font-weight:600;margin-bottom:12px">API Key Created</h3>
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">API Key Created</h3>
       <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:12px;margin-bottom:16px">
-        <p style="font-size: 20px;font-weight:600;color:#92400e;margin-bottom:4px">Save this key now!</p>
-        <p style="font-size: 20px;color:#b45309">This is the only time you will see this key. Store it securely.</p>
+        <p style="font-size:13px;font-weight:600;color:#92400e;margin-bottom:4px">Save this key now!</p>
+        <p style="font-size:12px;color:#b45309">This is the only time you will see this key. Store it securely.</p>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:16px">
-        <input type="text" value="${key.key}" readonly style="flex:1;padding:10px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size: 20px;font-family:monospace">
+        <input type="text" value="${key.key}" readonly style="flex:1;padding:10px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size:12px;font-family:monospace">
         <button class="btn btn-ghost" onclick="copyKey('${key.key}')">\u{1F4CB} Copy</button>
       </div>
       <button class="btn btn-primary" style="width:100%" onclick="closeCreatedKeyModal()">Done</button>
@@ -2371,15 +2370,15 @@ function renderKeys() {
       <div>
         <div class="key-name">${k.name}</div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
-          <code style="font-size: 18px;color:var(--text-muted);font-family:monospace" id="${k.id}-display">${apiKeyStore.visible.has(k.id) ? k.key : masked}</code>
-          <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size: 20px;padding:2px" onclick="toggleKeyVis('${k.id}')" title="Show/Hide">\u{1F441}</button>
-          <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size: 20px;padding:2px" onclick="copyKey('${k.key}')" title="Copy">\u{1F4CB}</button>
+          <code style="font-size:11px;color:var(--text-muted);font-family:monospace" id="${k.id}-display">${apiKeyStore.visible.has(k.id) ? k.key : masked}</code>
+          <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px" onclick="toggleKeyVis('${k.id}')" title="Show/Hide">\u{1F441}</button>
+          <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:2px" onclick="copyKey('${k.key}')" title="Copy">\u{1F4CB}</button>
         </div>
-        <div style="font-size: 20px;color:var(--text-muted);margin-top:4px">Created ${k.created}</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:4px">Created ${k.created}</div>
       </div>
       <div class="flex items-center gap-2">
         <div class="toggle ${k.active ? 'on' : ''}" onclick="this.classList.toggle('on')" title="Active/Pause"></div>
-        <button style="background:none;border:none;color:var(--red-primary);cursor:pointer;font-size: 18px;padding:4px" onclick="deleteKey('${k.name}')" title="Delete">\u{1F5D1}</button>
+        <button style="background:none;border:none;color:var(--red-primary);cursor:pointer;font-size:14px;padding:4px" onclick="deleteKey('${k.name}')" title="Delete">\u{1F5D1}</button>
       </div>`;
     container.appendChild(row);
   });
@@ -2635,7 +2634,7 @@ function showCreateComboModal() {
       <div class="form-group">
         <label class="form-label">Combo Name</label>
         <input type="text" class="form-input" id="combo-name" placeholder="my-coding-stack" autocomplete="off">
-        <small style="color:var(--text-muted);font-size: 18px;margin-top:4px;display:block">Only letters, numbers, -, _, .</small>
+        <small style="color:var(--text-muted);font-size:11px;margin-top:4px;display:block">Only letters, numbers, -, _, .</small>
       </div>
       <div class="form-group">
         <label class="form-label">Models <span style="color:var(--text-muted);font-weight:400">(drag to reorder priority)</span></label>
@@ -2804,7 +2803,7 @@ function showProviderDetail(id) {
           ${c.models.map(m => `
             <div class="flex items-center gap-2 mb-2" style="padding:8px;background:var(--bg);border-radius:6px;">
               <span class="badge badge-success sm">&#9679;</span>
-              <span style="font-size: 20px">${m}</span>
+              <span style="font-size:13px">${m}</span>
               <button class="btn btn-ghost sm ml-auto" onclick="testConnection('${m}')">&#9654; Test</button>
             </div>`).join('')}
         </div>
