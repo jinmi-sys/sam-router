@@ -100,7 +100,7 @@ Grid Pattern : #0d1410 (subtle emerald grid)
   - Proxy Pools, Skills, Console Log (live log), Settings
 
 ### Phase 3: Main Pages (PRIORITY)
-- [ ] **Endpoint Page** — API endpoint display, Tunnel/Tailscale toggle, Token Saver (RTK + Caveman), API Keys (sam_sr_ prefix)
+- [x] **Endpoint Page** — API endpoint display, Tunnel/Tailscale toggle, Token Saver (RTK + Caveman), API Keys (sam_sr_ prefix)
 - [ ] **Providers Page** — Provider cards, connection status, "Add Anthropic/OpenAI Compatible", "Test All"
 - [ ] **Combos Page** — Create combo, round-robin toggle, copy/edit/delete
 - [ ] **Usage Page** — Overview tab, token charts, cost tracking

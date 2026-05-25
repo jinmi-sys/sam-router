@@ -16,6 +16,8 @@
 | 19:38 WIB | Minggu, 25 Mei 2026 | Key features dari Master diterima. Disimpan ke KEY_FEATURES.md | ✅ Selesai |
 | 20:25 WIB | Minggu, 25 Mei 2026 | 9Router source cloned from GitHub | ✅ Selesai |
 | 20:26 WIB | Minggu, 25 Mei 2026 | Phase 2: Core Structure completed. HTML shell with 18 pages built. | ✅ Selesai |
+| 20:48 WIB | Minggu, 25 Mei 2026 | P3-Step 1: Endpoint Page completed. Tunnel/Tailscale/RTK/Caveman/API Keys CRUD. | ✅ Selesai |
+| 20:50 WIB | Minggu, 25 Mei 2026 | GitHub push + Pages deploy: jinmi-sys.github.io/sam-router | ✅ Selesai |
 | - | - | Build HTML frontend (theme: red dark emerald) | ⏳ Pending |
 | - | - | Hardcode port 2500 ke config | ⏳ Pending |
 | - | - | API key generator (prefix: sam_sr) | ⏳ Pending |
