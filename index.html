@@ -789,10 +789,13 @@ body::before {
   <!-- MAIN -->
   <main class="main-content">
     <div class="topbar">
-      <button class="topbar-btn hamburger" onclick="toggleSidebar()" style="display:none">&#9776;</button>
-      <button class="topbar-btn" onclick="alert('Donate')">&#128150; Donate</button>
-      <button class="topbar-btn active" id="theme-btn" onclick="toggleTheme()">&#9788;</button>
-      <button class="topbar-btn">&#9783;</button>
+      <button class="topbar-btn hamburger" onclick="toggleSidebar()">&#9776;</button>
+      <input type="text" class="topbar-search" placeholder="Search providers..." />
+      <div class="topbar-right">
+        <button class="topbar-btn" onclick="alert('Donate')">&#128150; Donate</button>
+        <button class="topbar-btn active" id="theme-btn" onclick="toggleTheme()">&#9788;</button>
+        <button class="topbar-btn">&#9783;</button>
+      </div>
     </div>
 
     <div class="page-content">
@@ -2793,12 +2796,6 @@ function closeModal(id) {
   if (el) el.remove();
 }
 
-// Sidebar toggle
-const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebar = document.getElementById('sidebar');
-sidebarToggle.addEventListener('click', () => {
-  sidebar.classList.toggle('collapsed');
-});
 </script>
 </body>
 </html>
