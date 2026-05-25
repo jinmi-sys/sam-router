@@ -5,6 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAM Router v1.0</title>
 <style>
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+}
+
+.nav-icon.material-symbols-outlined {
+  font-size: 20px;
+  width: 24px;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
 /* === SAM ROUTER — RED DARK EMERALD THEME === */
 :root {
   --bg-primary: #0a0f0a;
@@ -653,6 +681,7 @@ body::before {
 .justify-between { justify-content: space-between; }
 
 </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
 </head>
 <body>
 <div class="app-layout">
@@ -670,31 +699,31 @@ body::before {
       <!-- MAIN NAV -->
       <div class="nav-section">
         <div class="nav-item active" data-page="endpoint">
-          <span class="nav-icon">&#9889;</span>
+          <span class="nav-icon material-symbols-outlined">api</span>
           Endpoint
         </div>
         <div class="nav-item" data-page="providers">
-          <span class="nav-icon">&#128421;</span>
+          <span class="nav-icon material-symbols-outlined">dns</span>
           Providers
         </div>
         <div class="nav-item" data-page="combos">
-          <span class="nav-icon">&#128142;</span>
+          <span class="nav-icon material-symbols-outlined">layers</span>
           Combos
         </div>
         <div class="nav-item" data-page="usage">
-          <span class="nav-icon">&#128202;</span>
+          <span class="nav-icon material-symbols-outlined">bar_chart</span>
           Usage
         </div>
         <div class="nav-item" data-page="quota-tracker">
-          <span class="nav-icon">&#128260;</span>
+          <span class="nav-icon material-symbols-outlined">data_usage</span>
           Quota Tracker
         </div>
         <div class="nav-item" data-page="mitm">
-          <span class="nav-icon">&#128737;</span>
+          <span class="nav-icon material-symbols-outlined">security</span>
           MITM
         </div>
         <div class="nav-item" data-page="cli-tools">
-          <span class="nav-icon">&#128187;</span>
+          <span class="nav-icon material-symbols-outlined">terminal</span>
           CLI Tools
         </div>
       </div>
@@ -703,46 +732,46 @@ body::before {
       <div class="nav-section">
         <div class="nav-section-title">SYSTEM</div>
         <div class="nav-item" data-page="media-providers" id="media-toggle">
-          <span class="nav-icon">&#128194;</span>
+          <span class="nav-icon material-symbols-outlined">perm_media</span>
           Media Providers
           <span class="nav-toggle" id="media-arrow">&#9654;</span>
         </div>
         <div class="nav-submenu" id="media-submenu">
           <div class="nav-item" data-page="embedding">
-            <span class="nav-icon">&#9679;</span>
+            <span class="nav-icon material-symbols-outlined">circle</span>
             Embedding
           </div>
           <div class="nav-item" data-page="text-to-image">
-            <span class="nav-icon">&#9679;</span>
+            <span class="nav-icon material-symbols-outlined">circle</span>
             Text to Image
           </div>
           <div class="nav-item" data-page="text-to-speech">
-            <span class="nav-icon">&#9679;</span>
+            <span class="nav-icon material-symbols-outlined">circle</span>
             Text To Speech
           </div>
           <div class="nav-item" data-page="speech-to-text">
-            <span class="nav-icon">&#9679;</span>
+            <span class="nav-icon material-symbols-outlined">circle</span>
             Speech To Text
           </div>
           <div class="nav-item" data-page="web-fetch">
-            <span class="nav-icon">&#9679;</span>
+            <span class="nav-icon material-symbols-outlined">circle</span>
             Web Fetch/Search
           </div>
         </div>
         <div class="nav-item" data-page="proxy-pools">
-          <span class="nav-icon">&#128230;</span>
+          <span class="nav-icon material-symbols-outlined">lan</span>
           Proxy Pools
         </div>
         <div class="nav-item" data-page="skills">
-          <span class="nav-icon">&#127775;</span>
+          <span class="nav-icon material-symbols-outlined">extension</span>
           Skills
         </div>
         <div class="nav-item" data-page="console-log">
-          <span class="nav-icon">&#128195;</span>
+          <span class="nav-icon material-symbols-outlined">terminal</span>
           Console Log
         </div>
         <div class="nav-item" data-page="settings">
-          <span class="nav-icon">&#9881;</span>
+          <span class="nav-icon material-symbols-outlined">settings</span>
           Settings
         </div>
       </div>
